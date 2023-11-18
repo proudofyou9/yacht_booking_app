@@ -2,9 +2,27 @@ import React, {useEffect} from 'react';
 import {View, ImageBackground, StyleSheet} from 'react-native';
 
 const SplashScreen = ({navigation}) => {
+
+  const [user, setUser] = React.useState('');
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.navigate('Welcome'); // Replace 'WelcomeScreen' with the name of your welcome screen component
+      const userCheck = auth().onAuthStateChanged(userExist=>{
+        if(userExist) {
+          console.log("**************************");
+          console.log(userExist);
+          setUser(userExist);
+          navigation.navigate('Search');
+        }
+        else {
+          setUser("");
+          navigation.navigate('Welcome'); // Replace 'WelcomeScreen' with the name of your welcome screen component
+        }
+      })
+      return () => {
+        userCheck()
+        console.log(user);
+      }
     }, 3000); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer); // Clear the timeout if the component unmounts before the timer expires
