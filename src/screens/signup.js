@@ -20,21 +20,19 @@ import IconButton from '../components/IconButton';
 import IconTextInput from '../components/IconTextInput';
 
 // HERE: Firebase signup
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import { getAuth, createUserWithEmailAndPassword } from '@react-native-firebase/auth';
 
 const RegisterScreen = ({navigation}) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   const [validated, setValidated] = useState(false);
 
-  const [fullName, setFullName] = useState('');
-  const [fullNameValid, setFullNameValid] = useState(false);
-
-  const [email, setEmail] = useState('');
-  const [emailValid, setEmailValid] = useState(false);
-  const [password, setPassword] = useState('');
-  const [passwordValid, setPasswordValid] = useState(false);
+  const [fullName, setFullName] = useState('aaa aaa');
+  const [fullNameValid, setFullNameValid] = useState(true);
+  const [email, setEmail] = useState('aaa@aaa.aaa');
+  const [emailValid, setEmailValid] = useState(true);
+  const [password, setPassword] = useState('aaaaaa');
+  const [passwordValid, setPasswordValid] = useState(true);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const fullNameRegex = /^[a-zA-Z]+ [a-zA-Z]+$/;
@@ -77,66 +75,15 @@ const RegisterScreen = ({navigation}) => {
     return;
   };
 
-  const signup = async () => {
-    // try {
-    //   const userData = {
-    //     name: fullName,
-    //     email: email,
-    //     password: password,
-    //     type: 1,
-    //   };
-    //   const response = await fetch(
-    //     'http://gmcharter.syshosting.com:7000/api/v1/users',
-    //     {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify(userData),
-    //     },
-    //   );
-
-    //   const data = await response.json();
-    //   if (!data.message) {
-    //     Toast.show({
-    //       type: 'success',
-    //       text1: 'Success',
-    //       text2: 'You are signuped!',
-    //       position: 'bottom',
-    //     });
-    //     return true;
-    //   } else {
-    //     Toast.show({
-    //       type: 'error',
-    //       text1: 'Error',
-    //       text2: 'Already user exists.',
-    //       position: 'bottom',
-    //     });
-    //     return false;
-    //   }
-    // } catch (error) {
-    //   Toast.show({
-    //     type: 'error',
-    //     text1: 'Error',
-    //     text2: 'Server Error. Please check network connection.',
-    //     position: 'bottom',
-    //   });
-    //   return false;
-    // }
-
-    // HERE: Firebase signup
-    try{
-      const newReg = await auth().createUserWithEmailAndPassword(email,password)
-      firestore().collection('users').doc(newReg.user.uid).set({
-        name: fullName,
-        email: newReg.user.email,
-        uid: newReg.user.uid,
-        type: 1,
-      })
-        }catch(err){
-      alert('Registration Unsuccessful! Try again');
-
-    }
+  const signup = () => {
+    const auth = getAuth()
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((user) => {
+      console.log(user);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   };
 
   useEffect(() => {
