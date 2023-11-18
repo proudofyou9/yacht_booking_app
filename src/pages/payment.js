@@ -18,209 +18,262 @@ const Payment = ({navigation}) => {
   const handleInputChange = text => {
     setInputValue(text);
   };
+  
+  const {confirmPayment, loading} = useConfirmPayment();
+
+  const fetchPaymentIntentClientSecret = async () => {
+
+    // FIXME: API_URL must be set
+    const response = await fetch(`${"API_URL"}/create-payment-intent`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        currency: 'usd',
+      }),
+    });
+    const {clientSecret} = await response.json();
+
+    return clientSecret;
+  };
+
+  const handlePayPress = async () => {
+    if (!card) {
+      return;
+    }
+
+    // Fetch the intent client secret from the backend.
+    const clientSecret = await fetchPaymentIntentClientSecret();
+
+    // Confirm the payment with the card details
+    const {paymentIntent, error} = await confirmPayment(clientSecret, {
+      paymentMethodType: 'Card',
+      paymentMethodData: {
+        billingDetails,
+      },
+    });
+
+    if (error) {
+      console.log('Payment confirmation error', error);
+    } else if (paymentIntent) {
+      console.log('Success from promise', paymentIntent);
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          showsVerticalScrollIndicator={false}>
-          <View style={styles.header}>
-            <TouchableOpacity
-              style={styles.leftComponent}
-              onPress={() => {
-                navigation.navigate('Book');
-              }}>
-              <Image
-                source={require('../assets/images/arrow_left.png')}
-                style={{width: 20, height: 20}}
-              />
-            </TouchableOpacity>
-            <Text style={styles.title}>Total Price</Text>
-            <View style={styles.rightComponent} />
-          </View>
-          <View style={{paddingHorizontal: 40}}>
-            <View>
-              <View>
-                <Text
-                  style={{fontSize: 22, fontWeight: 'bold', color: '#246bbc'}}>
-                  $ 300 / hour
-                </Text>
-                <Space height={16} />
-                <View style={[styles.float, {alignItems: 'center'}]}>
-                  <Text style={{fontSize: 20, color: '#093373'}}>From</Text>
-                  <View
-                    style={[
-                      styles.right,
-                      {
-                        width: 150,
-                      },
-                    ]}>
-                    <Text style={{fontSize: 15, color: '#093373'}}>
-                      10 / 03 / 2023 10 : 00
-                    </Text>
-                  </View>
-                </View>
-                <Space height={16} />
-                <View style={[styles.float, {alignItems: 'center'}]}>
-                  <Text style={{fontSize: 20, color: '#093373'}}>To</Text>
-                  <View
-                    style={[
-                      styles.right,
-                      {
-                        width: 150,
-                      },
-                    ]}>
-                    <Text style={{fontSize: 15, color: '#093373'}}>
-                      10 / 03 / 2023 18 : 00
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <Space height={16} />
-              <View
-                style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
-              <Space height={16} />
-              <View>
-                <View style={[styles.float, {alignItems: 'center'}]}>
-                  <Text style={{fontSize: 20, color: '#093373'}}>
-                    Rental Price
-                  </Text>
-                  <View>
-                    <Text style={{fontSize: 15, color: '#093373'}}>$ 820</Text>
-                  </View>
-                </View>
-                <Space height={16} />
-                <View style={[styles.float, {alignItems: 'center'}]}>
-                  <Text style={{fontSize: 20, color: '#093373'}}>
-                    Service Fee
-                  </Text>
-                  <View>
-                    <Text style={{fontSize: 15, color: '#093373'}}>$ 910</Text>
-                  </View>
-                </View>
-                <Space height={16} />
-                <View style={[styles.float, {alignItems: 'center'}]}>
-                  <Text style={{fontSize: 20, color: '#093373'}}>
-                    Handling Fees
-                  </Text>
-                  <View>
-                    <Text style={{fontSize: 15, color: '#093373'}}>$ 58</Text>
-                  </View>
-                </View>
-                <Space height={16} />
-              </View>
-
-              <Space height={16} />
-              <View
-                style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
-              <Space height={16} />
-              <View style={[styles.float, {alignItems: 'center'}]}>
-                <Text style={{fontSize: 20, color: '#093373'}}>
-                  Total Price
-                </Text>
-                <View style={[]}>
-                  <Text style={{fontSize: 15, color: 'black'}}>$1, 800</Text>
-                </View>
-              </View>
-              <Space height={16} />
-              <View
-                style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
-              <Space height={16} />
-              <View style={[styles.float, {alignItems: 'center'}]}>
-                <Text style={{fontSize: 20, color: '#093373'}}>
-                  Secure Payment
-                </Text>
-              </View>
-              <Space height={16} />
-              <View style={[styles.float]}>
-                <View>
-                  <Text>First Name</Text>
-                  <Space height={4} />
-                  <TextInput
-                    style={styles.input}
-                    value={inputValue}
-                    onChangeText={handleInputChange}
-                    placeholder="Enter first name"
-                  />
-                </View>
-                <Space width={8} />
-                <View>
-                  <Text>Last Name</Text>
-                  <Space height={4} />
-                  <TextInput
-                    style={styles.input}
-                    value={inputValue}
-                    onChangeText={handleInputChange}
-                    placeholder="Enter last name"
-                  />
-                </View>
-              </View>
-              <Space height={16} />
-              <View>
-                <View style={styles.float}>
-                  <Text>Card Number</Text>
-                  <View style={styles.float}>
-                    <Image
-                      source={require('../assets/images/visa.png')}
-                      style={{width: 40, height: 24}}
-                    />
-                    <Space width={4} />
-                    <Image
-                      source={require('../assets/images/mastercard.png')}
-                      style={{width: 40, height: 24}}
-                    />
-                    <Space width={4} />
-                    <Image
-                      source={require('../assets/images/amex.png')}
-                      style={{width: 40, height: 24}}
-                    />
-                  </View>
-                </View>
-                <Space height={4} />
-                <TextInput
-                  style={styles.inputCard}
-                  value={inputValue}
-                  onChangeText={handleInputChange}
-                  placeholder="1234-1234-1234-1234"
+    <StripeProvider
+      publishableKey="pk_test_TYooMQauvdEDq54NiTphI7jx"
+      urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+      merchantIdentifier="merchant.com.{{YOUR_APP_NAME}}" // required for Apple Pay
+    >
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            showsVerticalScrollIndicator={false}>
+            <View style={styles.header}>
+              <TouchableOpacity
+                style={styles.leftComponent}
+                onPress={() => {
+                  navigation.navigate('Book');
+                }}>
+                <Image
+                  source={require('../assets/images/arrow_left.png')}
+                  style={{width: 20, height: 20}}
                 />
-              </View>
-              <Space height={16} />
-              <View style={[styles.float]}>
-                <View>
-                  <Text>Expiration Date</Text>
-                  <Space height={4} />
-                  <TextInput
-                    style={styles.input}
-                    value={inputValue}
-                    onChangeText={handleInputChange}
-                    placeholder="MM/YY"
-                  />
-                </View>
-                <View>
-                  <Text>CVV / cryptogram</Text>
-                  <Space height={4} />
-                  <TextInput
-                    style={styles.input}
-                    value={inputValue}
-                    onChangeText={handleInputChange}
-                    placeholder="CVV"
-                  />
-                </View>
-              </View>
+              </TouchableOpacity>
+              <Text style={styles.title}>Total Price</Text>
+              <View style={styles.rightComponent} />
             </View>
-            <View></View>
-          </View>
-        </ScrollView>
+            <View style={{paddingHorizontal: 40}}>
+              <View>
+                <View>
+                  <Text
+                    style={{fontSize: 22, fontWeight: 'bold', color: '#246bbc'}}>
+                    $ 300 / hour
+                  </Text>
+                  <Space height={16} />
+                  <View style={[styles.float, {alignItems: 'center'}]}>
+                    <Text style={{fontSize: 20, color: '#093373'}}>From</Text>
+                    <View
+                      style={[
+                        styles.right,
+                        {
+                          width: 150,
+                        },
+                      ]}>
+                      <Text style={{fontSize: 15, color: '#093373'}}>
+                        10 / 03 / 2023 10 : 00
+                      </Text>
+                    </View>
+                  </View>
+                  <Space height={16} />
+                  <View style={[styles.float, {alignItems: 'center'}]}>
+                    <Text style={{fontSize: 20, color: '#093373'}}>To</Text>
+                    <View
+                      style={[
+                        styles.right,
+                        {
+                          width: 150,
+                        },
+                      ]}>
+                      <Text style={{fontSize: 15, color: '#093373'}}>
+                        10 / 03 / 2023 18 : 00
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <Space height={16} />
+                <View
+                  style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
+                <Space height={16} />
+                <View>
+                  <View style={[styles.float, {alignItems: 'center'}]}>
+                    <Text style={{fontSize: 20, color: '#093373'}}>
+                      Rental Price
+                    </Text>
+                    <View>
+                      <Text style={{fontSize: 15, color: '#093373'}}>$ 820</Text>
+                    </View>
+                  </View>
+                  <Space height={16} />
+                  <View style={[styles.float, {alignItems: 'center'}]}>
+                    <Text style={{fontSize: 20, color: '#093373'}}>
+                      Service Fee
+                    </Text>
+                    <View>
+                      <Text style={{fontSize: 15, color: '#093373'}}>$ 910</Text>
+                    </View>
+                  </View>
+                  <Space height={16} />
+                  <View style={[styles.float, {alignItems: 'center'}]}>
+                    <Text style={{fontSize: 20, color: '#093373'}}>
+                      Handling Fees
+                    </Text>
+                    <View>
+                      <Text style={{fontSize: 15, color: '#093373'}}>$ 58</Text>
+                    </View>
+                  </View>
+                  <Space height={16} />
+                </View>
+
+                <Space height={16} />
+                <View
+                  style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
+                <Space height={16} />
+                <View style={[styles.float, {alignItems: 'center'}]}>
+                  <Text style={{fontSize: 20, color: '#093373'}}>
+                    Total Price
+                  </Text>
+                  <View style={[]}>
+                    <Text style={{fontSize: 15, color: 'black'}}>$1, 800</Text>
+                  </View>
+                </View>
+                <Space height={16} />
+                <View
+                  style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
+                <Space height={16} />
+                <View style={[styles.float, {alignItems: 'center'}]}>
+                  <Text style={{fontSize: 20, color: '#093373'}}>
+                    Secure Payment
+                  </Text>
+                </View>
+                <Space height={16} />
+                <View style={[styles.float]}>
+                  <View>
+                    <Text>First Name</Text>
+                    <Space height={4} />
+                    <TextInput
+                      style={styles.input}
+                      value={inputValue}
+                      onChangeText={handleInputChange}
+                      placeholder="Enter first name"
+                    />
+                  </View>
+                  <Space width={8} />
+                  <View>
+                    <Text>Last Name</Text>
+                    <Space height={4} />
+                    <TextInput
+                      style={styles.input}
+                      value={inputValue}
+                      onChangeText={handleInputChange}
+                      placeholder="Enter last name"
+                    />
+                  </View>
+                </View>
+                <Space height={16} />
+                <View>
+                  <View style={styles.float}>
+                    <Text>Card Number</Text>
+                    <CardField
+                      postalCodeEnabled={true}
+                      placeholders={{
+                        number: '4242 4242 4242 4242',
+                      }}
+                      cardStyle={{
+                        backgroundColor: '#FFFFFF',
+                        textColor: '#000000',
+                      }}
+                      style={{
+                        width: '100%',
+                        height: 50,
+                        marginVertical: 30,
+                      }}
+                      onCardChange={(cardDetails) => {
+                        console.log('cardDetails', cardDetails);
+                      }}
+                      onFocus={(focusedField) => {
+                        console.log('focusField', focusedField);
+                      }}
+                    />
+                  </View>
+                  <Space height={4} />
+                  <TextInput
+                    style={styles.inputCard}
+                    value={inputValue}
+                    onChangeText={handleInputChange}
+                    placeholder="1234-1234-1234-1234"
+                  />
+                </View>
+                <Space height={16} />
+                <View style={[styles.float]}>
+                  <View>
+                    <Text>Expiration Date</Text>
+                    <Space height={4} />
+                    <TextInput
+                      style={styles.input}
+                      value={inputValue}
+                      onChangeText={handleInputChange}
+                      placeholder="MM/YY"
+                    />
+                  </View>
+                  <View>
+                    <Text>CVV / cryptogram</Text>
+                    <Space height={4} />
+                    <TextInput
+                      style={styles.input}
+                      value={inputValue}
+                      onChangeText={handleInputChange}
+                      placeholder="CVV"
+                    />
+                  </View>
+                </View>
+              </View>
+              <View></View>
+            </View>
+          </ScrollView>
+        </View>
+        <View style={styles.bottomBar}>
+          <TouchableOpacity style={styles.tab} onPress={handlePayPress}>
+            <View style={{flexDirection: 'row', paddingVertical: 8}}>
+              <IconTextButton title="Validate and pay $1,800" hasIcon={false} />
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.tab}>
-          <View style={{flexDirection: 'row', paddingVertical: 8}}>
-            <IconTextButton title="Validate and pay $1,800" hasIcon={false} />
-          </View>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </StripeProvider>
   );
 };
 
