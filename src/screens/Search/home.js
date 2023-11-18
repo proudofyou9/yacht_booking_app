@@ -242,19 +242,23 @@ const Home = ({navigation, setStatus}) => {
                 Popular Listing
               </Text>
               <Space height={10} />
-              {Object.entries(list).map((item, index) => {
-                return (
-                  <View key={index}>
-                    <YachtCard
-                      data={item}
-                      onPress={() => {
-                        navigation.navigate('Info');
-                      }}
-                    />
-                    <Space height={30} />
-                  </View>
-                );
-              })}
+              {list.length == 0 ? (
+                <View><Text style={{textAlign: 'center'}}>There is no yachts.</Text></View>
+              ) : (
+                list.map((item, index) => {
+                  return (
+                    <View key={index}>
+                      <YachtCard
+                        data={item}
+                        onPress={() => {
+                          navigation.navigate('Info');
+                        }}
+                      />
+                      <Space height={30} />
+                    </View>
+                  );
+                })
+              )}
             </View>
           </View>
         </View>

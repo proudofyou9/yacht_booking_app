@@ -24,9 +24,9 @@ const Favourites = ({navigation}) => {
         </View>
         <Space height={16} />
         <View style={{backgroundColor: '#fffefb', margin: 16}}>
-          <YachtCard />
+          {/* <YachtCard /> */}
           <Space height={32} />
-          <YachtCard />
+          {/* <YachtCard /> */}
         </View>
       </ScrollView>
       <View style={styles.bottomBar}>
