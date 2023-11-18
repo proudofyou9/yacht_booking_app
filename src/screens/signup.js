@@ -20,18 +20,21 @@ import IconButton from '../components/IconButton';
 import IconTextInput from '../components/IconTextInput';
 
 // HERE: Firebase signup
-import { getAuth, createUserWithEmailAndPassword } from '@react-native-firebase/auth';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+} from '@react-native-firebase/auth';
 
 const RegisterScreen = ({navigation}) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   const [validated, setValidated] = useState(false);
 
-  const [fullName, setFullName] = useState('aaa aaa');
+  const [fullName, setFullName] = useState('');
   const [fullNameValid, setFullNameValid] = useState(true);
-  const [email, setEmail] = useState('aaa@aaa.aaa');
+  const [email, setEmail] = useState('');
   const [emailValid, setEmailValid] = useState(true);
-  const [password, setPassword] = useState('aaaaaa');
+  const [password, setPassword] = useState('');
   const [passwordValid, setPasswordValid] = useState(true);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -62,7 +65,7 @@ const RegisterScreen = ({navigation}) => {
       }
     }
 
-    if (password == '') {
+    if (password == '' || password.length < 6) {
       setPasswordValid(false);
       setValidated(false);
     } else {
@@ -76,14 +79,14 @@ const RegisterScreen = ({navigation}) => {
   };
 
   const signup = () => {
-    const auth = getAuth()
+    const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
-    .then((user) => {
-      console.log(user);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then(user => {
+        console.log(user);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {

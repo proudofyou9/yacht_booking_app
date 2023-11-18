@@ -10,16 +10,19 @@ import {
 } from 'react-native';
 
 import Space from '../components/Space';
-import { auth, onAuthStateChanged } from '@react-native-firebase/auth';
+import {
+  auth,
+  getAuth,
+  signOut,
+  onAuthStateChanged,
+} from '@react-native-firebase/auth';
 
 const Profile = ({navigation}) => {
-  const [loggedIn, setLoggedIn] = useState(true)
+  const [loggedIn, setLoggedIn] = useState(true);
 
   const signout = () => {
-    auth()
-    .signOut()
-    .then(() => console.log('User signed out!'));
-  }
+    signOut(getAuth()).then(() => navigation.replace('Welcome'));
+  };
 
   return (
     <View style={styles.container}>
@@ -188,7 +191,7 @@ const Profile = ({navigation}) => {
           <Space height={8} />
           <View style={{borderBottomWidth: 0.5, borderStyle: 'solid'}}></View>
           <Space height={8} />
-          <TouchableOpacity>
+          <TouchableOpacity onPress={signout}>
             <View
               style={{
                 flexDirection: 'row',
@@ -199,7 +202,6 @@ const Profile = ({navigation}) => {
               <Image
                 source={require('../assets/images/logout.png')}
                 style={{width: 32, height: 30}}
-                onPress={signout}
               />
               <Space width={16} />
               <Text style={{fontSize: 18}}>Log out</Text>

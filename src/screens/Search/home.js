@@ -16,12 +16,13 @@ import Space from '../../components/Space';
 import {Image} from 'react-native-elements';
 import YachtCard from '../../components/YachtCard';
 import TextButton from '../../components/TextButton';
+import CONFIG from '../../utils/consts/config';
 
 const Home = ({navigation, setStatus}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [location, setLocation] = useState('');
   const [guest, setGuest] = useState('');
-  const [list, setList] = useState({});
+  const [list, setList] = useState([]);
   const openModal = () => {
     setModalVisible(true);
   };
@@ -31,8 +32,8 @@ const Home = ({navigation, setStatus}) => {
   };
 
   const getYachtList = async () => {
-    const response = await fetch('http://192.168.143.81:7000/api/v1/yachts/', {
-      method: 'GET',
+    const response = await fetch(CONFIG.API_URL + 'yachts/filter', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -243,15 +244,17 @@ const Home = ({navigation, setStatus}) => {
               </Text>
               <Space height={10} />
               {list.length == 0 ? (
-                <View><Text style={{textAlign: 'center'}}>There is no yachts.</Text></View>
+                <View>
+                  <Text style={{textAlign: 'center'}}>There is no yachts.</Text>
+                </View>
               ) : (
-                Object.entries(list).map((item, index) => {
+                list.map((item, index) => {
                   return (
                     <View key={index}>
                       <YachtCard
                         data={item}
                         onPress={() => {
-                          navigation.navigate('Info');
+                          navigation.navigate('Info', item);
                         }}
                       />
                       <Space height={30} />

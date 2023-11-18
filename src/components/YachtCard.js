@@ -9,12 +9,13 @@ import {
 import Space from '../components/Space';
 import {Image} from 'react-native-elements';
 import ImageSlider from './ImageSlider';
+import CONFIG from '../utils/consts/config';
 
 const YachtCard = props => {
   const info = props.data.YachtInfos;
   let images = new Array(props.data.YachtInfos.length);
   info.map((item, index) => {
-    images[index] = 'http://192.168.143.81:7000/api/v1/asset/' + item.content;
+    images[index] = CONFIG.API_URL + 'asset/' + item.content;
   });
   return (
     <View style={styles.card}>
@@ -33,7 +34,8 @@ const YachtCard = props => {
           {props.data.name}
         </Text>
         <Text style={{fontSize: 12, color: 'rgba(0,0,0,0.7)'}}>
-          {props.data.region} | {props.data.passenger} people | {props.data.length} Feet
+          {props.data.region} | {props.data.passenger} people |{' '}
+          {props.data.length} Feet
         </Text>
         <Space height={5} />
         <View style={{flexDirection: 'row'}}>
@@ -67,7 +69,7 @@ const YachtCard = props => {
                 style={[{flex: 0, width: 26, height: 12, marginTop: 5}]}
               />
               <Text style={{flex: 0, color: 'rgba(0,0,0,0.7)'}}>
-                &nbsp; {props.data.captain?"With Skipper":"Without Skipper"}
+                &nbsp; {props.data.captain ? 'With Skipper' : 'Without Skipper'}
               </Text>
             </View>
           </View>

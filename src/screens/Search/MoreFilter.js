@@ -23,6 +23,23 @@ const MoreFilter = props => {
   const [cabins, setCabins] = useState(0);
   const [berths, setBerths] = useState(0);
 
+  const filter = () => {
+    const filtering = {
+      type,
+      duration,
+      price: pricePerHour,
+      length: yachtLength,
+      power: motorPower,
+      year,
+      captain,
+      passengers,
+      cabins,
+      bed: berths,
+      manufacturer: manufactrer,
+    };
+    props.filter(filtering);
+    props.closeDrawer();
+  };
   const handlePassengerIncrement = () => {
     setPassengers(passengers + 1);
   };
@@ -509,7 +526,9 @@ const MoreFilter = props => {
           title="Filter"
           hasIcon={false}
           style={{width: 110}}
-          onPress={() => props.closeDrawer()}
+          onPress={() => {
+            filter();
+          }}
         />
       </View>
       <Space height={100} />

@@ -14,6 +14,7 @@ import Space from '../components/Space';
 
 // HERE: Firestore message
 import firestore from '@react-native-firebase/firestore';
+import {getAuth, auth} from '@react-native-firebase/auth';
 
 const Messages = ({navigation}) => {
   const [tab, setTab] = useState(true);
@@ -23,7 +24,7 @@ const Messages = ({navigation}) => {
   const [users, setUsers] = useState(null)
   
   const getUsers = async ()=> {
-    const querySanp = await firestore().collection('users').where('uid','!=',user.uid).get()
+    const querySanp = await firestore().collection('users').where('uid','!=',getAuth().currentUser.uid).get()
     const allUsers = querySanp.docs.map(docSnap=>docSnap.data())
 
     setUsers(allUsers)
@@ -35,7 +36,7 @@ const Messages = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {/* <ScrollView
+      <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
@@ -173,11 +174,11 @@ const Messages = ({navigation}) => {
             borderBottomWidth: 0.5,
             borderStyle: 'solid',
           }}></View>
-      </ScrollView> */}
+      </ScrollView>
 
       {/* HERE: Firebase message */}
-      <ScrollView>
-        <View style={styles.Contain}>
+      {/* <ScrollView>
+        <View style={styles.scrollContainer}>
             <FlatList
                 data={users}
                 keyExtractor={(item)=>item.uid}
@@ -193,8 +194,8 @@ const Messages = ({navigation}) => {
                     </TouchableOpacity>
                 )}
                 />
-        </View>
-        </ScrollView>
+          </View>
+        </ScrollView> */}
       <View style={styles.bottomBar}>
         <TouchableOpacity
           onPress={() => {

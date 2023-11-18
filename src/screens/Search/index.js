@@ -8,6 +8,7 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 import Home from './home';
 import Filter from './filter';
@@ -27,7 +28,11 @@ const Search = ({navigation}) => {
       <View style={styles.bottomBar}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Favourite');
+            if (!auth().currentUser) {
+              navigation.navigate('Welcome');
+            } else {
+              navigation.navigate('Favourite');
+            }
           }}>
           <View style={{width: 60, alignItems: 'center'}}>
             <Image
@@ -39,7 +44,11 @@ const Search = ({navigation}) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Message');
+            if (!auth().currentUser) {
+              navigation.navigate('Welcome');
+            } else {
+              navigation.navigate('Message');
+            }
           }}>
           <View style={{width: 60, alignItems: 'center'}}>
             <Image
@@ -63,7 +72,11 @@ const Search = ({navigation}) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Booking');
+            if (!auth().currentUser) {
+              navigation.navigate('Welcome');
+            } else {
+              navigation.navigate('Booking');
+            }
           }}>
           <View style={{width: 60, alignItems: 'center'}}>
             <Image
@@ -75,7 +88,11 @@ const Search = ({navigation}) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Profile');
+            if (!auth().currentUser) {
+              navigation.navigate('Welcome');
+            } else {
+              navigation.navigate('Profile');
+            }
           }}>
           <View style={{width: 60, alignItems: 'center'}}>
             <Image

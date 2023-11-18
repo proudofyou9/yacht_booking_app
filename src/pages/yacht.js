@@ -10,8 +10,11 @@ import {
 import ImageSlider from '../components/ImageSlider';
 import Space from '../components/Space';
 import IconTextButton from '../components/IconTextButton';
+import CONFIG from '../utils/consts/config';
 
-const Yacht = ({navigation}) => {
+const Yacht = ({navigation,}) => {
+  console.log(navigation);
+
   return (
     <View style={[styles.container, {backgroundColor: 'white'}]}>
       <ScrollView
@@ -19,11 +22,9 @@ const Yacht = ({navigation}) => {
         showsVerticalScrollIndicator={false}>
         <ImageSlider
           imageLinks={[
-            require('../assets/images/yacht_1.png'),
-            require('../assets/images/yacht_2.png'),
-            require('../assets/images/yacht_3.png'),
-            require('../assets/images/yacht_1.png'),
-            require('../assets/images/yacht_2.png'),
+            CONFIG.API_URL + 'asset/yachts/yacht_1.png',
+            CONFIG.API_URL + 'asset/yachts/yacht_2.png',
+            CONFIG.API_URL + 'asset/yachts/yacht_3.png'
           ]}
         />
         <TouchableOpacity

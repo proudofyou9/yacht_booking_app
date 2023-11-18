@@ -16,8 +16,8 @@ import IconButton from '../components/IconButton';
 import Toast from 'react-native-toast-message';
 
 // import FingerprintScanner from 'react-native-fingerprint-scanner';
-import auth from '@react-native-firebase/auth';
-import { appleAuth } from '@invertase/react-native-apple-authentication';
+import { auth, signInWithCredential } from '@react-native-firebase/auth';
+import { appleAuth, appleAuthAndroid } from '@invertase/react-native-apple-authentication';
 import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics';
 import { v4 as uuid } from 'uuid'
 
@@ -44,81 +44,20 @@ const WelcomeScreen = ({navigation}) => {
   };
 
   const onGoogleButtonPress = async () => {
-    // try {
-    //   await GoogleSignin.hasPlayServices();
-    //   const {idToken} = await GoogleSignin.signIn();
-    //   if (idToken != null) {
-    //     const info = await GoogleSignin.getCurrentUser();
-    //     // const tokens = await GoogleSignin.getTokens();
-    //     console.log(info);
-    //     Toast.show({
-    //       type: 'success',
-    //       text1: 'Success',
-    //       text2: 'You are logined!',
-    //       position: 'bottom',
-    //     });
-    //     return true;
-    //   } else {
-    //     Toast.show({
-    //       type: 'error',
-    //       text1: 'Error',
-    //       text2: 'Your credential is incorrect.',
-    //       position: 'bottom',
-    //     });
-    //     return false;
-    //   }
-    // } catch (error) {
-    //   if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-    //     console.log(error);
-    //   } else if (error.code === statusCodes.IN_PROGRESS) {
-    //     console.log(error);
-    //   } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-    //     console.log(error);
-    //   } else {
-    //     console.log(error);
-    //   }
-    //   Toast.show({
-    //     type: 'error',
-    //     text1: 'Error',
-    //     text2: 'Something went wrong',
-    //     position: 'bottom',
-    //   });
-    //   return false;
-    // }
     // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    // Get the user ID token
+    // Get the users ID token
     const { idToken } = await GoogleSignin.signIn();
-
+    console.log(idToken);
     // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-    // Link the user with the credential
-    const firebaseUserCredential = await auth().currentUser.linkWithCredential(googleCredential);
-    // You can store in your app that the account was linked.
-    return;
+    // // Sign-in the user with the credential
+    // return signInWithCredential(auth(), googleCredential);
   };
 
   const onAppleButtonPress = async () => {
-    // Start the sign-in request
-    const appleAuthRequestResponse = await appleAuth.performRequest({
-      requestedOperation: appleAuth.Operation.LOGIN,
-      // As per the FAQ of react-native-apple-authentication, the name should come first in the following array.
-      // See: https://github.com/invertase/react-native-apple-authentication#faqs
-      requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-    });
-
-    // Ensure Apple returned a user identityToken
-    if (!appleAuthRequestResponse.identityToken) {
-      throw new Error('Apple Sign-In failed - no identify token returned');
-    }
-
-    // Create a Firebase credential from the response
-    const { identityToken, nonce } = appleAuthRequestResponse;
-    const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
-
-    // Sign the user in with the credential
-    return auth().signInWithCredential(appleCredential);    
+      
   }
 
   const revokeAccess = async () => {

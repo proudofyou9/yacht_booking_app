@@ -12,19 +12,20 @@ import {
 import Space from '../components/Space';
 import TextButton from '../components/TextButton';
 import IconTextButton from '../components/IconTextButton';
+import {StripeProvider, useConfirmPayment} from '@stripe/stripe-react-native';
 
 const Payment = ({navigation}) => {
-  // Function to handle text input changes
-  const handleInputChange = text => {
-    setInputValue(text);
-  };
-  
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [card, setCard] = useState('');
+  const [expirationDate, setExpirationDate] = useState('');
+  const [CVV, setCVV] = useState('');
+
   const {confirmPayment, loading} = useConfirmPayment();
 
   const fetchPaymentIntentClientSecret = async () => {
-
     // FIXME: API_URL must be set
-    const response = await fetch(`${"API_URL"}/create-payment-intent`, {
+    const response = await fetch(`${'API_URL'}/create-payment-intent`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,26 +40,27 @@ const Payment = ({navigation}) => {
   };
 
   const handlePayPress = async () => {
-    if (!card) {
-      return;
-    }
+    // if (!card) {
+    //   return;
+    // }
+    console.log("hhhhhh");
+    // alert('Success!', 'You successfully booked!');
 
-    // Fetch the intent client secret from the backend.
-    const clientSecret = await fetchPaymentIntentClientSecret();
+    // const clientSecret = await fetchPaymentIntentClientSecret();
 
-    // Confirm the payment with the card details
-    const {paymentIntent, error} = await confirmPayment(clientSecret, {
-      paymentMethodType: 'Card',
-      paymentMethodData: {
-        billingDetails,
-      },
-    });
+    // // Confirm the payment with the card details
+    // const {paymentIntent, error} = await confirmPayment(clientSecret, {
+    //   paymentMethodType: 'Card',
+    //   paymentMethodData: {
+    //     billingDetails,
+    //   },
+    // });
 
-    if (error) {
-      console.log('Payment confirmation error', error);
-    } else if (paymentIntent) {
-      console.log('Success from promise', paymentIntent);
-    }
+    // if (error) {
+    //   console.log('Payment confirmation error', error);
+    // } else if (paymentIntent) {
+    //   console.log('Success from promise', paymentIntent);
+    // }
   };
 
   return (
@@ -90,7 +92,11 @@ const Payment = ({navigation}) => {
               <View>
                 <View>
                   <Text
-                    style={{fontSize: 22, fontWeight: 'bold', color: '#246bbc'}}>
+                    style={{
+                      fontSize: 22,
+                      fontWeight: 'bold',
+                      color: '#246bbc',
+                    }}>
                     $ 300 / hour
                   </Text>
                   <Space height={16} />
@@ -134,7 +140,9 @@ const Payment = ({navigation}) => {
                       Rental Price
                     </Text>
                     <View>
-                      <Text style={{fontSize: 15, color: '#093373'}}>$ 820</Text>
+                      <Text style={{fontSize: 15, color: '#093373'}}>
+                        $ 820
+                      </Text>
                     </View>
                   </View>
                   <Space height={16} />
@@ -143,7 +151,9 @@ const Payment = ({navigation}) => {
                       Service Fee
                     </Text>
                     <View>
-                      <Text style={{fontSize: 15, color: '#093373'}}>$ 910</Text>
+                      <Text style={{fontSize: 15, color: '#093373'}}>
+                        $ 910
+                      </Text>
                     </View>
                   </View>
                   <Space height={16} />
@@ -186,8 +196,8 @@ const Payment = ({navigation}) => {
                     <Space height={4} />
                     <TextInput
                       style={styles.input}
-                      value={inputValue}
-                      onChangeText={handleInputChange}
+                      value={firstName}
+                      onChangeText={setFirstName}
                       placeholder="Enter first name"
                     />
                   </View>
@@ -197,8 +207,8 @@ const Payment = ({navigation}) => {
                     <Space height={4} />
                     <TextInput
                       style={styles.input}
-                      value={inputValue}
-                      onChangeText={handleInputChange}
+                      value={lastName}
+                      onChangeText={setLastName}
                       placeholder="Enter last name"
                     />
                   </View>
@@ -207,7 +217,7 @@ const Payment = ({navigation}) => {
                 <View>
                   <View style={styles.float}>
                     <Text>Card Number</Text>
-                    <CardField
+                    {/* <CardField
                       postalCodeEnabled={true}
                       placeholders={{
                         number: '4242 4242 4242 4242',
@@ -221,19 +231,19 @@ const Payment = ({navigation}) => {
                         height: 50,
                         marginVertical: 30,
                       }}
-                      onCardChange={(cardDetails) => {
+                      onCardChange={cardDetails => {
                         console.log('cardDetails', cardDetails);
                       }}
-                      onFocus={(focusedField) => {
+                      onFocus={focusedField => {
                         console.log('focusField', focusedField);
                       }}
-                    />
+                    /> */}
                   </View>
                   <Space height={4} />
                   <TextInput
                     style={styles.inputCard}
-                    value={inputValue}
-                    onChangeText={handleInputChange}
+                    value={card}
+                    onChangeText={setCard}
                     placeholder="1234-1234-1234-1234"
                   />
                 </View>
@@ -244,8 +254,8 @@ const Payment = ({navigation}) => {
                     <Space height={4} />
                     <TextInput
                       style={styles.input}
-                      value={inputValue}
-                      onChangeText={handleInputChange}
+                      value={expirationDate}
+                      onChangeText={setExpirationDate}
                       placeholder="MM/YY"
                     />
                   </View>
@@ -254,8 +264,8 @@ const Payment = ({navigation}) => {
                     <Space height={4} />
                     <TextInput
                       style={styles.input}
-                      value={inputValue}
-                      onChangeText={handleInputChange}
+                      value={CVV}
+                      onChangeText={setCVV}
                       placeholder="CVV"
                     />
                   </View>

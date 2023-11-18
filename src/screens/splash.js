@@ -38,9 +38,11 @@ const SplashScreen = ({navigation}) => {
       // }
 
       // navigation.navigate('Welcome'); // Replace 'WelcomeScreen' with the name of your welcome screen component
-      navigation.replace(
-        auth().currentUser ? "Search" : "Welcome"
-      );
+
+      // navigation.replace(
+      //   auth().currentUser ? "Search" : "Welcome"
+      // );
+      navigation.replace('Search');
     }, 3000); // 3000 milliseconds = 3 seconds
 
     return () => clearTimeout(timer); // Clear the timeout if the component unmounts before the timer expires

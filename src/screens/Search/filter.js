@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import TextButton from '../../components/TextButton';
 import YachtCard from '../../components/YachtCard';
 import GuestFilter from './GuestFilter';
 import MoreFilter from './MoreFilter';
+import CONFIG from '../../utils/consts/config';
 
 const Filter = ({navigation, setScrollStatus}) => {
   const [filterGuest, setFilterGuest] = useState(false);
@@ -27,6 +28,8 @@ const Filter = ({navigation, setScrollStatus}) => {
   const [location, setLocation] = useState('');
   const sliderRef = useRef(null);
   const [slideEnabled, setSlideEnabled] = useState(true);
+  const [list, setList] = useState([]);
+
   const handleSortIconClick = () => {
     setShowSortingSection(!showSortingSection);
   };
@@ -83,6 +86,18 @@ const Filter = ({navigation, setScrollStatus}) => {
     });
   };
 
+  const getYachtList = async (filter = {}) => {
+    const response = await fetch(CONFIG.API_URL + 'yachts/filter', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(filter),
+    });
+    const data = await response.json();
+    await setList(data);
+  };
+
   const drawerTranslateX = drawerAnimation.interpolate({
     inputRange: [0, 1],
     outputRange: [300, 0],
@@ -93,6 +108,9 @@ const Filter = ({navigation, setScrollStatus}) => {
     outputRange: [0, 50],
   });
 
+  useEffect(() => {
+    getYachtList();
+  }, []);
   return (
     <TouchableWithoutFeedback onPress={handleOutsideClick}>
       <View style={styles.container}>
@@ -102,7 +120,7 @@ const Filter = ({navigation, setScrollStatus}) => {
           </Text>
         </Animated.View>
         <ScrollView
-          style={{flex: 1, margin: 16}}
+          style={{flex: 1, margin: 16, bottom: 20}}
           showsVerticalScrollIndicator={false}>
           <TouchableOpacity>
             <View style={[styles.searchWidget, {backgroundColor: '#f5f5f5'}]}>
@@ -145,7 +163,7 @@ const Filter = ({navigation, setScrollStatus}) => {
               justifyContent: 'space-between',
             }}>
             <Text style={{color: 'black', fontSize: 20}}>
-              100+ Boats Available
+              {list.length} Boats Available
             </Text>
             <View style={{position: 'relative'}}>
               <TouchableOpacity onPress={handleSortIconClick}>
@@ -209,12 +227,25 @@ const Filter = ({navigation, setScrollStatus}) => {
             </View>
           </View>
           <Space height={10} />
-          <YachtCard enable={slideEnabled} />
-          <Space height={30} />
-          <YachtCard enable={slideEnabled} />
-          <Space height={30} />
-          <YachtCard enable={slideEnabled} />
-          <Space height={90} />
+          {list.length == 0 ? (
+            <View>
+              <Text style={{textAlign: 'center'}}>There is no yachts.</Text>
+            </View>
+          ) : (
+            list.map((item, index) => {
+              return (
+                <View key={index}>
+                  <YachtCard
+                    data={item}
+                    onPress={() => {
+                      navigation.navigate('Info');
+                    }}
+                  />
+                  <Space height={30} />
+                </View>
+              );
+            })
+          )}
         </ScrollView>
         {drawerOpen && (
           <View style={styles.drawerOverlay}>
@@ -233,7 +264,7 @@ const Filter = ({navigation, setScrollStatus}) => {
                 {filterGuest ? (
                   <GuestFilter closeDrawer={closeDrawer} />
                 ) : (
-                  <MoreFilter closeDrawer={closeDrawer} />
+                  <MoreFilter closeDrawer={closeDrawer} filter={getYachtList}/>
                 )}
               </ScrollView>
             </Animated.View>

@@ -1,6 +1,6 @@
 const firebaseConfig = {
   clientId: 'com.getmycharter_user',
-  appId: '1:519492099868:android:ca163c1f186daeab94a4d9',
+  appId: '1:519492099868:android:490763b73d798e4294a4d9',
   apiKey: 'AIzaSyDrNvT9cqNfd8p6B3bwspK4Wm-6UYK2PPM',
   databaseURL: 'https://gmcharter-f1ff0-default-rtdb.firebaseio.com',
   storageBucket: 'https://gmcharter-f1ff0.appspot.com',

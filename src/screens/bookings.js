@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -15,6 +15,7 @@ const Booking = ({navigation}) => {
   const [tab, setTab] = useState(0);
   const [order, setOrder] = useState(false);
   const [order1, setOrder1] = useState(false);
+
   return (
     <View style={styles.container}>
       <ScrollView
