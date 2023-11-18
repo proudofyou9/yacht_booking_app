@@ -21,7 +21,7 @@ const Home = ({navigation, setStatus}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [location, setLocation] = useState('');
   const [guest, setGuest] = useState('');
-  const [list, setList] = useState([]);
+  const [list, setList] = useState({});
   const openModal = () => {
     setModalVisible(true);
   };
@@ -242,7 +242,7 @@ const Home = ({navigation, setStatus}) => {
                 Popular Listing
               </Text>
               <Space height={10} />
-              {list.map((item, index) => {
+              {Object.entries(list).map((item, index) => {
                 return (
                   <View key={index}>
                     <YachtCard
