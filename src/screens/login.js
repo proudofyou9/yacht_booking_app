@@ -19,17 +19,16 @@ import IconButton from '../components/IconButton';
 import IconTextInput from '../components/IconTextInput';
 
 // HERE: Firebase signin
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import { firebaseAuth } from '../firebase';
 
 const LoginScreen = ({navigation}) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [validated, setValidated] = useState(false);
 
-  const [email, setEmail] = useState('');
-  const [emailValid, setEmailValid] = useState(false);
-  const [password, setPassword] = useState('');
-  const [passwordValid, setPasswordValid] = useState(false);
+  const [email, setEmail] = useState('aaa@aaa.aaa');
+  const [emailValid, setEmailValid] = useState(true);
+  const [password, setPassword] = useState('aaaaaa');
+  const [passwordValid, setPasswordValid] = useState(true);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -62,13 +61,15 @@ const LoginScreen = ({navigation}) => {
   const login = async () => {
     // HERE: Firebase signin
     try{
-      const newReg = await auth().signInWithEmailAndPassword(email,password)
+      const newReg = await signInWithEmailAndPassword(firebaseAuth, email, password)
   
       console.log('Sign in done')
+      console.log(newReg);
       return newReg
   
-    }catch(err){
+    } catch(err){
       alert('Email or Password incorrect');
+      throw err
     }
   };
 

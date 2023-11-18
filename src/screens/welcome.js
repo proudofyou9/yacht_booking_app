@@ -14,6 +14,7 @@ import TextButton from '../components/TextButton';
 import Space from '../components/Space';
 import IconButton from '../components/IconButton';
 import Toast from 'react-native-toast-message';
+
 // import FingerprintScanner from 'react-native-fingerprint-scanner';
 import auth from '@react-native-firebase/auth';
 import { appleAuth } from '@invertase/react-native-apple-authentication';
@@ -28,7 +29,7 @@ import {
 GoogleSignin.configure({
   webClientId:
     '519492099868-1i894undshk9fhaj9n3sfu8ifo8631gd.apps.googleusercontent.com',
-  offlineAccess: false,
+  offlineAccess: true,
 });
 
 const WelcomeScreen = ({navigation}) => {
@@ -43,115 +44,81 @@ const WelcomeScreen = ({navigation}) => {
   };
 
   const onGoogleButtonPress = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const {idToken} = await GoogleSignin.signIn();
-      if (idToken != null) {
-        const info = await GoogleSignin.getCurrentUser();
-        // const tokens = await GoogleSignin.getTokens();
-        console.log(info);
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'You are logined!',
-          position: 'bottom',
-        });
-        return true;
-      } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Your credential is incorrect.',
-          position: 'bottom',
-        });
-        return false;
-      }
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log(error);
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log(error);
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log(error);
-      } else {
-        console.log(error);
-      }
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Something went wrong',
-        position: 'bottom',
-      });
-      return false;
-    }
+    // try {
+    //   await GoogleSignin.hasPlayServices();
+    //   const {idToken} = await GoogleSignin.signIn();
+    //   if (idToken != null) {
+    //     const info = await GoogleSignin.getCurrentUser();
+    //     // const tokens = await GoogleSignin.getTokens();
+    //     console.log(info);
+    //     Toast.show({
+    //       type: 'success',
+    //       text1: 'Success',
+    //       text2: 'You are logined!',
+    //       position: 'bottom',
+    //     });
+    //     return true;
+    //   } else {
+    //     Toast.show({
+    //       type: 'error',
+    //       text1: 'Error',
+    //       text2: 'Your credential is incorrect.',
+    //       position: 'bottom',
+    //     });
+    //     return false;
+    //   }
+    // } catch (error) {
+    //   if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+    //     console.log(error);
+    //   } else if (error.code === statusCodes.IN_PROGRESS) {
+    //     console.log(error);
+    //   } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+    //     console.log(error);
+    //   } else {
+    //     console.log(error);
+    //   }
+    //   Toast.show({
+    //     type: 'error',
+    //     text1: 'Error',
+    //     text2: 'Something went wrong',
+    //     position: 'bottom',
+    //   });
+    //   return false;
+    // }
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the user ID token
+    const { idToken } = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Link the user with the credential
+    const firebaseUserCredential = await auth().currentUser.linkWithCredential(googleCredential);
+    // You can store in your app that the account was linked.
+    return;
   };
 
   const onAppleButtonPress = async () => {
-    
-    try {
-      const rawNonce = uuid();
-      const state = uuid();
+    // Start the sign-in request
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      // As per the FAQ of react-native-apple-authentication, the name should come first in the following array.
+      // See: https://github.com/invertase/react-native-apple-authentication#faqs
+      requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+    });
 
-      appleAuth.configure({
-        // The Service ID you registered with Apple
-        clientId: "com.example.client-android",
-
-        // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
-        // the URL you provided to Apple. It can be an empty route on your backend as it's never called.
-        redirectUri: "https://example.com/auth/callback",
-
-        // [OPTIONAL]
-        // Scope.ALL (DEFAULT) = 'email name'
-        // Scope.Email = 'email';
-        // Scope.Name = 'name';
-        scope: appleAuthAndroid.Scope.ALL,
-
-        // [OPTIONAL]
-        // ResponseType.ALL (DEFAULT) = 'code id_token';
-        // ResponseType.CODE = 'code';
-        // ResponseType.ID_TOKEN = 'id_token';
-        responseType: appleAuthAndroid.ResponseType.ALL,
-
-        // [OPTIONAL]
-        // A String value used to associate a client session with an ID token and mitigate replay attacks.
-        // This value will be SHA256 hashed by the library before being sent to Apple.
-        // This is required if you intend to use Firebase to sign in with this credential.
-        // Supply the response.id_token and rawNonce to Firebase OAuthProvider
-        nonce: rawNonce,
-
-        // [OPTIONAL]
-        // Unique state value used to prevent CSRF attacks. A UUID will be generated if nothing is provided.
-        state,
-      });
-
-      const response = await appleAuth.signIn();
-      if (response) {
-        const code = response.code; // Present if selected ResponseType.ALL / ResponseType.CODE
-        const id_token = response.id_token; // Present if selected ResponseType.ALL / ResponseType.ID_TOKEN
-        const user = response.user; // Present when user first logs in using appleId
-        const state = response.state; // A copy of the state value that was passed to the initial request.
-        console.log("Got auth code", code);
-        console.log("Got id_token", id_token);
-        console.log("Got user", user);
-        console.log("Got state", state);
-      }
-    } catch (error) {
-      if (error && error.message) {
-        switch (error.message) {
-          case appleAuthAndroid.Error.NOT_CONFIGURED:
-            console.log("appleAuthAndroid not configured yet.");
-            break;
-          case appleAuthAndroid.Error.SIGNIN_FAILED:
-            console.log("Apple signin failed.");
-            break;
-          case appleAuthAndroid.Error.SIGNIN_CANCELLED:
-            console.log("User cancelled Apple signin.");
-            break;
-          default:
-            break;
-        }
-      }
+    // Ensure Apple returned a user identityToken
+    if (!appleAuthRequestResponse.identityToken) {
+      throw new Error('Apple Sign-In failed - no identify token returned');
     }
+
+    // Create a Firebase credential from the response
+    const { identityToken, nonce } = appleAuthRequestResponse;
+    const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+
+    // Sign the user in with the credential
+    return auth().signInWithCredential(appleCredential);    
   }
 
   const revokeAccess = async () => {
@@ -178,11 +145,11 @@ const WelcomeScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-    FingerprintScanner.isSensorAvailable()
-      .then(biometryType => {
-        setBiometryType(biometryType);
-      })
-      .catch(error => console.log('isSensorAvailable error => ', error));
+    // FingerprintScanner.isSensorAvailable()
+    //   .then(biometryType => {
+    //     setBiometryType(biometryType);
+    //   })
+    //   .catch(error => console.log('isSensorAvailable error => ', error));
   }, []);
 
   const showAuthenticationDialog = async () => {

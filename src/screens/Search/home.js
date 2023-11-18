@@ -245,7 +245,7 @@ const Home = ({navigation, setStatus}) => {
               {list.length == 0 ? (
                 <View><Text style={{textAlign: 'center'}}>There is no yachts.</Text></View>
               ) : (
-                list.map((item, index) => {
+                Object.entries(list).map((item, index) => {
                   return (
                     <View key={index}>
                       <YachtCard

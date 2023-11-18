@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -10,8 +10,17 @@ import {
 } from 'react-native';
 
 import Space from '../components/Space';
+import { auth, onAuthStateChanged } from '@react-native-firebase/auth';
 
 const Profile = ({navigation}) => {
+  const [loggedIn, setLoggedIn] = useState(true)
+
+  const signout = () => {
+    auth()
+    .signOut()
+    .then(() => console.log('User signed out!'));
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -190,6 +199,7 @@ const Profile = ({navigation}) => {
               <Image
                 source={require('../assets/images/logout.png')}
                 style={{width: 32, height: 30}}
+                onPress={signout}
               />
               <Space width={16} />
               <Text style={{fontSize: 18}}>Log out</Text>

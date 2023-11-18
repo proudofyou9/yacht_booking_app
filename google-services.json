@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "519492099868",
+    "project_id": "gmcharter-f1ff0",
+    "storage_bucket": "gmcharter-f1ff0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519492099868:android:ca163c1f186daeab94a4d9",
+        "android_client_info": {
+          "package_name": "com.getmycharter_user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519492099868-bkjbai1ndmmoc7cm531apv27jjlvedo5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.getmycharter_user",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "519492099868-1i894undshk9fhaj9n3sfu8ifo8631gd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1Kv2flVd268m0XPDcqLKovBDsKB51-CY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519492099868-1i894undshk9fhaj9n3sfu8ifo8631gd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
