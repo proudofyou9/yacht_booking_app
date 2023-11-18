@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "519492099868",
+    "firebase_url": "https://gmcharter-f1ff0-default-rtdb.firebaseio.com",
     "project_id": "gmcharter-f1ff0",
     "storage_bucket": "gmcharter-f1ff0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:519492099868:android:ca163c1f186daeab94a4d9",
+        "mobilesdk_app_id": "1:519492099868:android:490763b73d798e4294a4d9",
         "android_client_info": {
           "package_name": "com.getmycharter_user"
         }
@@ -37,6 +38,13 @@
             {
               "client_id": "519492099868-1i894undshk9fhaj9n3sfu8ifo8631gd.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "519492099868-u56b8iprtk551glbkh6t8kpglq0174f6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.getmycharter.user"
+              }
             }
           ]
         }
