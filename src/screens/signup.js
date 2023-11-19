@@ -20,10 +20,8 @@ import IconButton from '../components/IconButton';
 import IconTextInput from '../components/IconTextInput';
 
 // HERE: Firebase signup
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-} from '@react-native-firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signOut } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const RegisterScreen = ({navigation}) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -65,7 +63,7 @@ const RegisterScreen = ({navigation}) => {
       }
     }
 
-    if (password == '' || password.length < 6) {
+    if (password == '' && password.length < 6) {
       setPasswordValid(false);
       setValidated(false);
     } else {
@@ -78,15 +76,38 @@ const RegisterScreen = ({navigation}) => {
     return;
   };
 
-  const signup = () => {
+  /**
+   * User Signup
+   * @returns 
+   */  
+  const signup = async () => {
     const auth = getAuth();
+    setValidated(false)
     createUserWithEmailAndPassword(auth, email, password)
       .then(user => {
         console.log(user);
+        signOut(getAuth()).then(() => console.log('Cache clear'));
+        firestore().collection('users').doc(getAuth().currentUser.uid).set({
+          name: fullName,
+          email: email,
+          uid: getAuth().currentUser.uid
+        })
+        .then((response) => {
+          console.log(response);
+          alert('User successfully registered! Please Login.');
+          navigation.replace('Login')
+        })
+        .catch((error) => {
+          console.log(error);
+          alert('User register failed!');
+          setValidated(true)
+        }) 
       })
       .catch(error => {
         console.log(error);
-      });
+        alert('User register failed!')
+        setValidated(true)
+      });    
   };
 
   useEffect(() => {

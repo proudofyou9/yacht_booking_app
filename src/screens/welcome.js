@@ -27,9 +27,8 @@ import {
 } from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
-  webClientId:
-    '519492099868-1i894undshk9fhaj9n3sfu8ifo8631gd.apps.googleusercontent.com',
-  offlineAccess: true,
+  webClientId: '519492099868-1i894undshk9fhaj9n3sfu8ifo8631gd.apps.googleusercontent.com',
+  offlineAccess: true
 });
 
 const WelcomeScreen = ({navigation}) => {
@@ -44,16 +43,8 @@ const WelcomeScreen = ({navigation}) => {
   };
 
   const onGoogleButtonPress = async () => {
-    // Check if your device supports Google Play
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    // Get the users ID token
-    const { idToken } = await GoogleSignin.signIn();
+    const { idToken } = await GoogleSignin.signIn()
     console.log(idToken);
-    // Create a Google credential with the token
-    // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-    // // Sign-in the user with the credential
-    // return signInWithCredential(auth(), googleCredential);
   };
 
   const onAppleButtonPress = async () => {

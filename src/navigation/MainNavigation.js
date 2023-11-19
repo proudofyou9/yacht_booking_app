@@ -28,7 +28,7 @@ const MainNavigator = ({parentNavigator}) => {
     <NavigationContainer>
       <>
         <Stack.Navigator
-          initialRouteName={'Chat'}
+          initialRouteName={'Splash'}
           screenOptions={{headerShown: false}}>
           <>
             <Stack.Screen name="Splash" component={SplashScreen} />
@@ -37,7 +37,10 @@ const MainNavigator = ({parentNavigator}) => {
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Favourite" component={FavouriteScreen} />
             <Stack.Screen name="Message" component={MessageScreen} />
-            <Stack.Screen name="Chat" component={ChatScreen} />
+
+            <Stack.Screen name='Chat'>
+              {(props) => <ChatScreen  {...props}/>}
+            </Stack.Screen>
 
             <Stack.Screen name="Search" component={SearchScreen} />
             <Stack.Screen name="Info" component={YachtScreen} />

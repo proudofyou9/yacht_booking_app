@@ -40,11 +40,11 @@ const Payment = ({navigation}) => {
   };
 
   const handlePayPress = async () => {
-    // if (!card) {
-    //   return;
-    // }
-    console.log("hhhhhh");
-    // alert('Success!', 'You successfully booked!');
+    if (!card) {
+      return;
+    }
+    alert('Success!', 'You successfully booked!');
+    navigation.replace("Search")
 
     // const clientSecret = await fetchPaymentIntentClientSecret();
 
@@ -276,9 +276,9 @@ const Payment = ({navigation}) => {
           </ScrollView>
         </View>
         <View style={styles.bottomBar}>
-          <TouchableOpacity style={styles.tab} onPress={handlePayPress}>
+          <TouchableOpacity style={styles.tab}>
             <View style={{flexDirection: 'row', paddingVertical: 8}}>
-              <IconTextButton title="Validate and pay $1,800" hasIcon={false} />
+              <IconTextButton title="Validate and pay $1,800" hasIcon={false} onPress={handlePayPress} />
             </View>
           </TouchableOpacity>
         </View>

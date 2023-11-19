@@ -18,7 +18,6 @@ import Space from '../components/Space';
 import IconButton from '../components/IconButton';
 import IconTextInput from '../components/IconTextInput';
 import firestore from '@react-native-firebase/firestore';
-// HERE: Firebase signin
 import { signInWithEmailAndPassword, getAuth } from '@react-native-firebase/auth';
 
 const LoginScreen = ({navigation}) => {
@@ -59,16 +58,12 @@ const LoginScreen = ({navigation}) => {
   };
 
   const login = async () => {
-    // HERE: Firebase signin
     try{
       const newReg = await signInWithEmailAndPassword(getAuth(), email, password)
       
       console.log('Sign in done')
       console.log(newReg);
 
-      // firestore().collection('users')
-      //   .add({...newReg,createdAt:firestore.FieldValue.serverTimestamp()})
-        
       return newReg
     } catch(err){
       alert('Email or Password incorrect');

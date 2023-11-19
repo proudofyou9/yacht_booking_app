@@ -21,14 +21,15 @@ const Messages = ({navigation}) => {
 
 
   // HERE: Firestore message
-  const [users, setUsers] = useState(null)
+  const [users, setUsers] = useState([])
   
   const getUsers = async ()=> {
-    const querySanp = await firestore().collection('users').where('uid','!=',getAuth().currentUser.uid).get()
+    const querySanp = await firestore().collection('users').get()
     const allUsers = querySanp.docs.map(docSnap=>docSnap.data())
-
     setUsers(allUsers)
-  }
+    console.log(allUsers);
+    console.log(getAuth().currentUser.email);
+ }
 
   useEffect(()=>{
     getUsers()
@@ -89,91 +90,59 @@ const Messages = ({navigation}) => {
             </View>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Chat');
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              paddingVertical: 16,
-              paddingHorizontal: 32,
-            }}>
-            <Image
-              source={require('../assets/images/yacht_2.png')}
-              style={{width: 60, height: 60, borderRadius: 60}}
-            />
-            <Space width={16} />
-            <View style={{justifyContent: 'center'}}>
-              <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
-                  Muhammad,
-                </Text>
-                <Space width={4} />
-                <Text style={{fontSize: 16, color: 'black'}}>
-                  971-50-123-4567
-                </Text>
-              </View>
-              <View>
-                <Text
-                  style={{fontSize: 16, fontWeight: 'bold', color: '#093373'}}>
-                  Luxury 60 Feet Majesty YACHT{' '}
-                </Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <Space height={8} />
-        <View
-          style={{
-            borderColor: 'black',
-            borderBottomWidth: 0.5,
-            borderStyle: 'solid',
-          }}></View>
-        <Space height={8} />
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Chat');
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              paddingVertical: 16,
-              paddingHorizontal: 32,
-            }}>
-            <Image
-              source={require('../assets/images/yacht_2.png')}
-              style={{width: 60, height: 60, borderRadius: 60}}
-            />
-            <Space width={16} />
-            <View style={{justifyContent: 'center'}}>
-              <View style={{flexDirection: 'row'}}>
-                <Text
-                  style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
-                  Muhammad,
-                </Text>
-                <Space width={4} />
-                <Text style={{fontSize: 16, color: 'black'}}>
-                  971-50-123-4567
-                </Text>
-              </View>
-              <View>
-                <Text
-                  style={{fontSize: 16, fontWeight: 'bold', color: '#093373'}}>
-                  Luxury 60 Feet Majesty YACHT{' '}
-                </Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <Space height={8} />
-        <View
-          style={{
-            borderColor: 'black',
-            borderBottomWidth: 0.5,
-            borderStyle: 'solid',
-          }}></View>
+        {
+          users.map((user, index) => {
+            if (user.email != getAuth().currentUser.email) {
+              return (
+                <View key={index}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.replace('Chat', {receiver: user});
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        paddingVertical: 16,
+                        paddingHorizontal: 32,
+                      }}>
+                      <Image
+                        source={require('../assets/images/yacht_2.png')}
+                        style={{width: 60, height: 60, borderRadius: 60}}
+                      />
+                      <Space width={16} />
+                      <View style={{justifyContent: 'center'}}>
+                        <View style={{flexDirection: 'row'}}>
+                          <Text
+                            style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
+                            {user.name},
+                          </Text>
+                          <Space width={4} />
+                          <Text style={{fontSize: 16, color: 'black'}}>
+                            {user.email}
+                          </Text>
+                        </View>
+                        <View>
+                          <Text
+                            style={{fontSize: 16, fontWeight: 'bold', color: '#093373'}}>
+                            -----------
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                  <Space height={8} />
+                  <View
+                    style={{
+                      borderColor: 'black',
+                      borderBottomWidth: 0.5,
+                      borderStyle: 'solid',
+                    }}></View>
+                  <Space height={8} />
+                </View>
+              )
+            }
+          })
+        }
       </ScrollView>
 
       {/* HERE: Firebase message */}

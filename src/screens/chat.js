@@ -16,77 +16,53 @@ import SelectDropdown from 'react-native-select-dropdown';
 import Space from '../components/Space';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TextButton from '../components/TextButton';
-import firestore from '@react-native-firebase/firestore';
+import {auth, getAuth} from '@react-native-firebase/auth';
+import firestore, {Filter} from '@react-native-firebase/firestore';
+import firebase from "@react-native-firebase/app"
+import firebaseConfig from '../firebase';
 
-const Chat = ({navigation}) => {
+const Chat = (props) => {
+  const navigation = props.navigation;
   const [message, setMessage] = useState('');
-  const [chatData, setChatData] = useState([
-    {message: 'Hello \nHow are you?', isSent: true},
-    {message: 'I am good, thank you! \nHow about you!', isSent: false},
-  ]);
-  // HERE: Firebase instance message
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState([]);
-
+  const [receiver, setReceiver] = useState([]);
+  
   const scrollViewRef = useRef();
 
-  console.log(chatData);
   useEffect(() => {
     scrollViewRef.current.scrollToEnd({animated: true});
-    // setMessages([
-    //   {
-    //     _id: 1,
-    //     text: 'Hello developer',
-    //     createdAt: new Date(),
-    //     user: {
-    //       _id: 2,
-    //       name: 'React Native',
-    //       avatar: 'https://placeimg.com/140/140/any',
-    //     },
-    //   },
-    // ])
-    // getAllMessages()
-  }, [chatData]);
+    setUser(getAuth().currentUser)
+    setReceiver(props.route.params.receiver)
+    getAllMessages()
+  }, []);
 
   const getAllMessages = async () => {
-    const chatid = uid > user.uid ? user.uid + '-' + uid : uid + '-' + user.uid;
     const msgResponse = await firestore()
-      .collection('Chats')
-      .doc(chatid)
-      .collection('messages')
-      .orderBy('createdAt', 'desc')
+      .collection('chats')
+      .orderBy('createdAt', 'ASC')
       .get();
     const allTheMsgs = msgResponse.docs.map(docSanp => {
       return {
         ...docSanp.data(),
-        createdAt: docSanp.data().createdAt.toDate(),
+        createdAt: docSanp.data().createdAt,
       };
     });
     setMessages(allTheMsgs);
+    scrollViewRef.current.scrollToEnd({animated: true});
   };
 
   const onSend = async () => {
-    console.log(message);
-    chatData.push({message, isSent: true});
-    setChatData(chatData);
-    // const msg = msgArray[0]
-    // const usermsg = {
-    //   ...msg,
-    //   sentBy: user.uid,
-    //   sentTo: uid,
-    //   createdAt: new Date()
-    // }
+    const usermsg = {
+      message,
+      sentBy: user.uid,
+      sentTo: receiver.uid,
+      createdAt: new Date()
+    }
     // setMessages(previousMessages => GiftedChat.append(previousMessages, usermsg))
-    // const chatid = uid > user.uid ? user.uid+ "-" +uid : uid+ "-" +user.uid
-
-    // firestore().collection('Chats')
-    // .doc(chatid)
-    // .collection('messages')
-    // .add({...usermsg,createdAt:firestore.FieldValue.serverTimestamp()})
-    // setChatData({
-    //   message: messages,
-    //   isSent: true,
-    // })
+    firestore().collection('chats')
+    .add({...usermsg,createdAt:firestore.FieldValue.serverTimestamp()})
+    getAllMessages()
   };
 
   return (
@@ -122,15 +98,18 @@ const Chat = ({navigation}) => {
           <Text>TODAY</Text>
         </View>
         <Space height={16} />
-
-        {chatData.map((chat, index) => (
+        {messages.length == 0 ?
+        (<View>
+          <Text style={{textAlign: 'center'}}>There is no history.</Text>
+        </View>) :
+        (messages.map((message, index) => (
           <View key={index}>
             <View
               style={{
-                flexDirection: !chat.isSent ? 'row' : '',
+                flexDirection: (!message.sentBy == user.uid) ? 'row' : '',
                 alignItems: 'flex-end',
               }}>
-              {!chat.isSent ? (
+              {(!message.sentBy == user.uid) ? (
                 <Image
                   source={require('../assets/images/avatar.png')}
                   style={{
@@ -145,52 +124,55 @@ const Chat = ({navigation}) => {
                 <></>
               )}
 
-              <View
-                key={chat.id}
-                style={[
-                  styles.messageContainer,
-                  chat.isSent
-                    ? styles.sentMessageContainer
-                    : styles.getMessageContainer,
-                ]}>
-                <Text style={{fontSize: 16, color: 'black'}}>
-                  {chat.message}
-                </Text>
-                <Space height={4} />
-                {chat.isSent ? (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
-                    <View></View>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                      <Text
-                        style={chat.isSent ? styles.sentTime : styles.getTime}>
-                        11:00am
-                      </Text>
-                      <Space width={chat.isSent ? 4 : 0} />
-                      {chat.isSent ? (
-                        <Image
-                          source={require('../assets/images/doublecheck.png')}
-                          style={styles.sentTime}
-                        />
-                      ) : (
-                        <></>
-                      )}
-                    </View>
-                  </View>
-                ) : (
-                  <Text style={chat.isSent ? styles.sentTime : styles.getTime}>
-                    11:00am
+              {((message.sentBy == user.uid && message.sentTo == receiver.uid) || (message.sentBy == receiver.uid && message.sentTo == user.uid)) ? 
+                (<View
+                  key={message}
+                  style={[
+                    styles.messageContainer,
+                    message.sentBy == user.uid
+                      ? styles.sentMessageContainer
+                      : styles.getMessageContainer,
+                  ]}>
+                  <Text style={{fontSize: 16, color: 'black'}}>
+                    {message.message}
                   </Text>
-                )}
-              </View>
+                  <Space height={4} />
+                  {message.sentBy == user.uid ? (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}>
+                      <View></View>
+                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text
+                          style={message.sentBy == user.uid ? styles.sentTime : styles.getTime}>
+                          11:00am
+                        </Text>
+                        <Space width={message.sentBy == user.uid ? 4 : 0} />
+                        {message.sentBy == user.uid ? (
+                          <Image
+                            source={require('../assets/images/doublecheck.png')}
+                            style={styles.sentTime}
+                          />
+                        ) : (
+                          ({})
+                        )}
+                      </View>
+                    </View>
+                  ) : (
+                    <Text style={message.sentBy == user.uid ? styles.sentTime : styles.getTime}>
+                      11:00am
+                    </Text>
+                  )}
+                </View>)
+                : <></>    
+              }
             </View>
 
             <Space height={16} />
           </View>
-        ))}
+        )))}
       </ScrollView>
       <View style={styles.inputContainer}>
         <TextInput
@@ -281,11 +263,11 @@ const styles = StyleSheet.create({
     // alignItems: 'flex-end',
   },
   getTime: {
-    textAlign: 'left',
+    // textAlign: 'left',
   },
 
   sentTime: {
-    textAlign: 'right',
+    // textAlign: 'right',
   },
   inputContainer: {
     flexDirection: 'row',
