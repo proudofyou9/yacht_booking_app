@@ -16,10 +16,12 @@ import Space from '../../components/Space';
 import {Image} from 'react-native-elements';
 import YachtCard from '../../components/YachtCard';
 import TextButton from '../../components/TextButton';
+import auth, {getAuth} from '@react-native-firebase/auth';
 import CONFIG from '../../utils/consts/config';
 
 const Home = ({navigation, setStatus}) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [active, setActive] = useState(false);
   const [location, setLocation] = useState('');
   const [guest, setGuest] = useState('');
   const [list, setList] = useState([]);
@@ -39,11 +41,28 @@ const Home = ({navigation, setStatus}) => {
       },
     });
     const data = await response.json();
-    await setList(data);
+    setList(data);
   };
+
+  const setFavorite = async (value, yachtID) => {
+    if (!auth().currentUser) {
+      navigation.navigate('Welcome');
+    } else {
+      const userID = await getAuth().currentUser.uid;
+      await fetch(CONFIG.API_URL + 'favorites/', {
+        method: value ? 'POST' : 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({userID, yachtID}),
+      });
+      await setActive(!active);
+    }
+  };
+
   useEffect(() => {
     getYachtList();
-  }, []);
+  }, [active]);
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View>
@@ -253,6 +272,7 @@ const Home = ({navigation, setStatus}) => {
                     <View key={index}>
                       <YachtCard
                         data={item}
+                        setFavorite={setFavorite}
                         onPress={() => {
                           navigation.navigate('Info', item);
                         }}

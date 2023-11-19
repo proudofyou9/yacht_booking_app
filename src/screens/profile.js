@@ -16,9 +16,25 @@ import {
   signOut,
   onAuthStateChanged,
 } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const Profile = ({navigation}) => {
   const [loggedIn, setLoggedIn] = useState(true);
+  const [user, setUser] = useState([]);
+
+  const getUserInfo = async () => {
+    firestore()
+      .collection('users')
+      .doc(getAuth().currentUser.uid)
+      .get()
+      .then(response => {
+        setUser(response._data);
+      });
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   const signout = () => {
     signOut(getAuth()).then(() => navigation.replace('Welcome'));
@@ -48,7 +64,7 @@ const Profile = ({navigation}) => {
                         fontSize: 20,
                         fontWeight: 'bold',
                       }}>
-                      Illia Fedenko
+                      {user.name}
                     </Text>
                     <Text style={{color: '#5A5A5A'}}>Click view and edit</Text>
                   </View>

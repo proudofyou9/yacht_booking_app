@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -8,10 +8,72 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-
+import {getAuth} from '@react-native-firebase/auth';
 import Space from '../components/Space';
 import YachtCard from '../components/YachtCard';
+import CONFIG from '../utils/consts/config';
 const Favourites = ({navigation}) => {
+  const [yachtIDList, setYachtIDList] = useState([]);
+  const [list, setList] = useState([]);
+
+  const getFavorites = async () => {
+    const userID = await getAuth().currentUser.uid;
+    const response = await fetch(CONFIG.API_URL + 'favorites/get', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({userID}),
+    });
+    const data = await response.json();
+    const yachts = [];
+    if (data.length > 0) {
+      data.map(item => {
+        yachts.push(item.yachtID);
+      });
+    }
+    setYachtIDList(yachts);
+  };
+
+  const setFavorite = async (value, yachtID) => {
+    const userID = await getAuth().currentUser.uid;
+    const response = await fetch(CONFIG.API_URL + 'favorites/', {
+      method: value ? 'POST' : 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({userID, yachtID}),
+    });
+    const data = await response.json();
+    const yachts = [];
+    if (data.length > 0) {
+      data.map(item => {
+        yachts.push(item.yachtID);
+      });
+    }
+    setYachtIDList(yachts);
+  };
+
+  const getYachtList = async () => {
+    const response = await fetch(CONFIG.API_URL + 'yachts/filter', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({id: yachtIDList}),
+    });
+    const data = await response.json();
+    setList(data);
+  };
+
+  useEffect(() => {
+    getFavorites();
+  }, []);
+
+  useEffect(() => {
+    getYachtList();
+  }, [yachtIDList]);
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -24,9 +86,27 @@ const Favourites = ({navigation}) => {
         </View>
         <Space height={16} />
         <View style={{backgroundColor: '#fffefb', margin: 16}}>
-          {/* <YachtCard /> */}
-          <Space height={32} />
-          {/* <YachtCard /> */}
+          {list.length == 0 ? (
+            <View>
+              <Text style={{textAlign: 'center'}}>There is no yachts.</Text>
+            </View>
+          ) : (
+            list.map((item, index) => {
+              return (
+                <View key={index}>
+                  <YachtCard
+                    data={item}
+                    favorite={true}
+                    setFavorite={setFavorite}
+                    onPress={() => {
+                      navigation.navigate('Info', item);
+                    }}
+                  />
+                  <Space height={30} />
+                </View>
+              );
+            })
+          )}
         </View>
       </ScrollView>
       <View style={styles.bottomBar}>
@@ -119,7 +199,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: 'gray',
     shadowColor: 'black',
-    shadowOffset: { width: 0, height: -2 }, // Adjust the height of the shadow border
+    shadowOffset: {width: 0, height: -2}, // Adjust the height of the shadow border
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 4,

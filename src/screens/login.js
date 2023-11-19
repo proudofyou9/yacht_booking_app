@@ -66,6 +66,7 @@ const LoginScreen = ({navigation}) => {
 
       return newReg
     } catch(err){
+      console.log(err);
       alert('Email or Password incorrect');
     }
   };

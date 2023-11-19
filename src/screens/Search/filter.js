@@ -17,6 +17,7 @@ import YachtCard from '../../components/YachtCard';
 import GuestFilter from './GuestFilter';
 import MoreFilter from './MoreFilter';
 import CONFIG from '../../utils/consts/config';
+import {getAuth} from '@react-native-firebase/auth';
 
 const Filter = ({navigation, setScrollStatus}) => {
   const [filterGuest, setFilterGuest] = useState(false);
@@ -96,6 +97,17 @@ const Filter = ({navigation, setScrollStatus}) => {
     });
     const data = await response.json();
     await setList(data);
+  };
+
+  const setFavorite = async (value, yachtID) => {
+    const userID = await getAuth().currentUser.uid;
+    await fetch(CONFIG.API_URL + 'favorites/', {
+      method: value ? 'POST' : 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({userID, yachtID}),
+    });
   };
 
   const drawerTranslateX = drawerAnimation.interpolate({
@@ -237,6 +249,7 @@ const Filter = ({navigation, setScrollStatus}) => {
                 <View key={index}>
                   <YachtCard
                     data={item}
+                    setFavorite={setFavorite}
                     onPress={() => {
                       navigation.navigate('Info');
                     }}
@@ -264,7 +277,7 @@ const Filter = ({navigation, setScrollStatus}) => {
                 {filterGuest ? (
                   <GuestFilter closeDrawer={closeDrawer} />
                 ) : (
-                  <MoreFilter closeDrawer={closeDrawer} filter={getYachtList}/>
+                  <MoreFilter closeDrawer={closeDrawer} filter={getYachtList} />
                 )}
               </ScrollView>
             </Animated.View>

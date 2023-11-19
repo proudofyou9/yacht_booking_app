@@ -20,8 +20,13 @@ import IconButton from '../components/IconButton';
 import IconTextInput from '../components/IconTextInput';
 
 // HERE: Firebase signup
-import { getAuth, createUserWithEmailAndPassword, signOut } from '@react-native-firebase/auth';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signOut,
+} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import CONFIG from '../utils/consts/config';
 
 const RegisterScreen = ({navigation}) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -63,7 +68,7 @@ const RegisterScreen = ({navigation}) => {
       }
     }
 
-    if (password == '' && password.length < 6) {
+    if (password == '' || password.length < 6) {
       setPasswordValid(false);
       setValidated(false);
     } else {
@@ -76,38 +81,54 @@ const RegisterScreen = ({navigation}) => {
     return;
   };
 
+  const addUser = async id => {
+    const response = await fetch(CONFIG.API_URL + 'users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: id,
+        type: 1,
+      }),
+    });
+    await response.json();
+  };
   /**
    * User Signup
-   * @returns 
-   */  
+   * @returns
+   */
   const signup = async () => {
     const auth = getAuth();
-    setValidated(false)
+    setValidated(false);
     createUserWithEmailAndPassword(auth, email, password)
       .then(user => {
         console.log(user);
         signOut(getAuth()).then(() => console.log('Cache clear'));
-        firestore().collection('users').doc(getAuth().currentUser.uid).set({
-          name: fullName,
-          email: email,
-          uid: getAuth().currentUser.uid
-        })
-        .then((response) => {
-          console.log(response);
-          alert('User successfully registered! Please Login.');
-          navigation.replace('Login')
-        })
-        .catch((error) => {
-          console.log(error);
-          alert('User register failed!');
-          setValidated(true)
-        }) 
+        firestore()
+          .collection('users')
+          .doc(getAuth().currentUser.uid)
+          .set({
+            name: fullName,
+            email: email,
+            uid: getAuth().currentUser.uid,
+          })
+          .then(response => {
+            addUser(user.user.uid);
+            alert('User successfully registered! Please Login.');
+            navigation.replace('Login');
+          })
+          .catch(error => {
+            console.log(error);
+            alert('User register failed!');
+            setValidated(true);
+          });
       })
       .catch(error => {
         console.log(error);
-        alert('User register failed!')
-        setValidated(true)
-      });    
+        alert('User register failed!');
+        setValidated(true);
+      });
   };
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 const CONFIG = {
-  API_URL: 'http://192.168.143.81:7000/api/v1/',
+  API_URL: 'http://gmcharter.syshosting.com:7000/api/v1/',
 };
 
 export default CONFIG;

@@ -17,6 +17,7 @@ const YachtCard = props => {
   info.map((item, index) => {
     images[index] = CONFIG.API_URL + 'asset/' + item.content;
   });
+  
   return (
     <View style={styles.card}>
       <View>
@@ -27,6 +28,24 @@ const YachtCard = props => {
           height={170}
           radius={true}
         />
+        <TouchableOpacity
+          style={{position: 'absolute', right: 20, top: 10}}
+          onPress={() => {
+            if (props.favorite) {
+              props.setFavorite(false, props.data.id);
+            } else {
+              props.setFavorite(true, props.data.id);
+            }
+          }}>
+          <Image
+            source={
+              props.favorite
+                ? require('../assets/images/favorite.png')
+                : require('../assets/images/heart.png')
+            }
+            style={{width: 30, height: 30}}
+          />
+        </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.cardInfo} onPress={props.onPress}>
         <Text

@@ -118,13 +118,13 @@ const Messages = ({navigation}) => {
                           </Text>
                           <Space width={4} />
                           <Text style={{fontSize: 16, color: 'black'}}>
-                            {user.email}
+                            {" +380 97 343 5517"}
                           </Text>
                         </View>
                         <View>
                           <Text
                             style={{fontSize: 16, fontWeight: 'bold', color: '#093373'}}>
-                            -----------
+                            Luxury 60 Feet Majesty YACHT 
                           </Text>
                         </View>
                       </View>
