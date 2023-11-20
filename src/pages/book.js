@@ -3,6 +3,7 @@ import {
   View,
   TouchableOpacity,
   Text,
+  TextInput,
   Image,
   StyleSheet,
   ScrollView,
@@ -13,7 +14,21 @@ import TextButton from '../components/TextButton';
 import IconTextButton from '../components/IconTextButton';
 
 const Book = ({navigation}) => {
+  const [date, setDate] = useState('12 / 03 / 2023');
+  const [time, setTime] = useState('10 : 00');
   const [hours, setHours] = useState(2);
+
+  const validation = () => {
+    if (date == '') {
+      alert('Please input date');
+      return;
+    }
+    if (time == '') {
+      alert('Please input time');
+      return;
+    }
+    // navigation.navigate('Payment');
+  };
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -37,29 +52,40 @@ const Book = ({navigation}) => {
           <Space height={30} />
           <View style={{paddingHorizontal: 40}}>
             <View>
-              <View style={[styles.float, {alignItems: 'center'}]}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginVertical: 16,
+                }}>
                 <Text
-                  style={[
-                    styles.left,
-                    {fontSize: 20, color: 'rgba(0,0,0,0.8)'},
-                  ]}>
+                  style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
                   Date
                 </Text>
                 <View
-                  style={[
-                    styles.right,
-                    {
-                      width: 150,
-                      borderWidth: 1,
-                      borderColor: 'black',
-                      borderRadius: 4,
-                      padding: 5,
-                    },
-                  ]}>
-                  <View style={[styles.float, {alignItems: 'center'}]}>
-                    <Text style={[styles.left, {fontSize: 16, color: 'black'}]}>
-                      10 / 03 / 2023
-                    </Text>
+                  style={{
+                    borderWidth: 1,
+                    paddingHorizontal: 8,
+                    borderRadius: 4,
+                    width: 160,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      gap: 16,
+                    }}>
+                    <TextInput
+                      style={{
+                        color: 'black',
+                        fontSize: 16,
+                        height: 36,
+                        paddingVertical: 0,
+                      }}
+                      value={date}
+                      onChangeText={setDate}></TextInput>
                     <Image
                       source={require('../assets/images/calendar.png')}
                       style={[
@@ -70,54 +96,74 @@ const Book = ({navigation}) => {
                   </View>
                 </View>
               </View>
-              <Space height={20} />
-              <View style={[styles.float, {alignItems: 'center'}]}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginVertical: 16,
+                }}>
                 <Text
-                  style={[
-                    styles.left,
-                    {fontSize: 20, color: 'rgba(0,0,0,0.8)'},
-                  ]}>
-                  Start time
+                  style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+                  Start Time
                 </Text>
                 <View
-                  style={[
-                    styles.right,
-                    {
-                      width: 150,
-                      borderWidth: 1,
-                      borderColor: 'black',
-                      borderRadius: 4,
-                      padding: 5,
-                    },
-                  ]}>
-                  <View style={[styles.float, {alignItems: 'center'}]}>
-                    <Text style={[styles.left, {fontSize: 16, color: 'black'}]}>
-                      08 : 00
-                    </Text>
+                  style={{
+                    borderWidth: 1,
+                    paddingHorizontal: 8,
+                    borderRadius: 4,
+                    width: 160,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      gap: 16,
+                    }}>
+                    <TextInput
+                      style={{
+                        color: 'black',
+                        fontSize: 16,
+                        height: 36,
+                        paddingVertical: 0,
+                      }}
+                      value={time}
+                      onChangeText={setTime}></TextInput>
                     <Image
                       source={require('../assets/images/clock.png')}
                       style={[
                         styles.right,
-                        {width: 16, height: 16, marginTop: 4, marginRight: 2},
+                        {width: 16, height: 16, marginTop: 4},
                       ]}
                     />
                   </View>
                 </View>
               </View>
-              <Space height={20} />
-              <View style={[styles.float, {alignItems: 'center'}]}>
-                <Text style={{fontSize: 20, color: '#093373'}}>Duration</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{color: '#093373', fontSize: 20, fontWeight: 'bold'}}>
+                  Duration
+                </Text>
                 <View
-                  style={[
-                    styles.right,
-                    {
-                      width: 150,
-                    },
-                  ]}>
-                  <View style={[styles.float, {alignItems: 'center'}]}>
+                  style={{
+                    // paddingHorizontal: 8,
+                    width: 160,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      // justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
                     <TextButton
                       title="2 hrs"
-                      style={{width: 64, height: 30}}
+                      style={{width: 64, height: 30, marginRight: 16}}
                       enable={true}
                       isOutline={hours == 2 ? false : true}
                       onPress={() => {
@@ -126,7 +172,7 @@ const Book = ({navigation}) => {
                     />
                     <TextButton
                       title="3 hrs"
-                      style={{width: 64, height: 30}}
+                      style={{width: 64, height: 30, marginLeft: 16}}
                       enable={true}
                       isOutline={hours == 3 ? false : true}
                       onPress={() => {
@@ -136,30 +182,35 @@ const Book = ({navigation}) => {
                   </View>
                 </View>
               </View>
-              <View style={[styles.float, {alignItems: 'center'}]}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                  <View style={{width: 76}}></View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                }}>
                 <TextButton
-                      title="4 hrs"
-                      style={{width: 64, height: 30}}
-                      enable={true}
-                      isOutline={hours == 4 ? false : true}
-                      onPress={() => {
-                        setHours(4);
-                      }}
-                    />
-                </View>
+                  title="4 hrs"
+                  style={{width: 64, height: 30, marginRight: 32}}
+                  enable={true}
+                  isOutline={hours == 4 ? false : true}
+                  onPress={() => {
+                    setHours(4);
+                  }}
+                />
                 <View
-                  style={[
-                    styles.right,
-                    {
-                      width: 150,
-                    },
-                  ]}>
-                  <View style={[styles.float, {alignItems: 'center'}]}>
+                  style={{
+                    // paddingHorizontal: 8,
+                    width: 160,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      // justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
                     <TextButton
                       title="6 hrs"
-                      style={{width: 64, height: 30}}
+                      style={{width: 64, height: 30, marginRight: 16}}
                       enable={true}
                       isOutline={hours == 6 ? false : true}
                       onPress={() => {
@@ -168,7 +219,7 @@ const Book = ({navigation}) => {
                     />
                     <TextButton
                       title="8 hrs"
-                      style={{width: 64, height: 30}}
+                      style={{width: 64, height: 30, marginLeft: 16}}
                       enable={true}
                       isOutline={hours == 8 ? false : true}
                       onPress={() => {
@@ -178,7 +229,7 @@ const Book = ({navigation}) => {
                   </View>
                 </View>
               </View>
-              <Space height={16} />
+              <Space height={32} />
               <View
                 style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
               <Space height={32} />
@@ -192,7 +243,7 @@ const Book = ({navigation}) => {
                     },
                   ]}>
                   <Text style={{fontSize: 15, color: '#093373'}}>
-                    10 / 03 / 2023 10 : 00
+                    {date} {time}
                   </Text>
                 </View>
               </View>
@@ -207,7 +258,7 @@ const Book = ({navigation}) => {
                     },
                   ]}>
                   <Text style={{fontSize: 15, color: '#093373'}}>
-                    10 / 03 / 2023 18 : 00
+                    {date} {time}
                   </Text>
                 </View>
               </View>
@@ -250,7 +301,7 @@ const Book = ({navigation}) => {
                   title="Instant Book"
                   hasIcon={true}
                   onPress={() => {
-                    navigation.navigate('Payment');
+                    validation();
                   }}
                 />
               </View>

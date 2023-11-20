@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   ScrollView,
@@ -12,8 +12,15 @@ import Space from '../components/Space';
 import IconTextButton from '../components/IconTextButton';
 import CONFIG from '../utils/consts/config';
 
-const Yacht = ({navigation,}) => {
-  console.log(navigation);
+const Yacht = ({navigation}) => {
+  const [aboutSize, setAboutSize] = useState(true);
+  const [featureSize, setFeatureSize] = useState(true);
+  const [specificationSize, setSpecificationSize] = useState(true);
+  const [allowSize, setAllowSize] = useState(true);
+  const [cancellationSize, setCancellationSize] = useState(true);
+  const [depositSize, setDepositSize] = useState(true);
+  const [captainInfoSize, setCaptainInfoSize] = useState(true);
+  const [bookingSize, setBookingSize] = useState(true);
 
   return (
     <View style={[styles.container, {backgroundColor: 'white'}]}>
@@ -24,7 +31,7 @@ const Yacht = ({navigation,}) => {
           imageLinks={[
             CONFIG.API_URL + 'asset/yachts/yacht_1.png',
             CONFIG.API_URL + 'asset/yachts/yacht_2.png',
-            CONFIG.API_URL + 'asset/yachts/yacht_3.png'
+            CONFIG.API_URL + 'asset/yachts/yacht_3.png',
           ]}
         />
         <TouchableOpacity
@@ -59,7 +66,7 @@ const Yacht = ({navigation,}) => {
               source={require('../assets/images/star.png')}
               style={{width: 20, height: 20}}
             />
-            <Text> 5.0 (34 Bookings)</Text>
+            <Text style={{color: 'black'}}> 5.0 (34 Bookings)</Text>
           </View>
           <Space height={16} />
           <View
@@ -97,7 +104,7 @@ const Yacht = ({navigation,}) => {
               <View>
                 <Text
                   numberOfLines={2}
-                  style={{textAlign: 'center', fontSize: 13}}>
+                  style={{textAlign: 'center', fontSize: 13, color: 'black'}}>
                   Owner’s response rate
                 </Text>
               </View>
@@ -126,7 +133,7 @@ const Yacht = ({navigation,}) => {
               <View>
                 <Text
                   numberOfLines={2}
-                  style={{textAlign: 'center', fontSize: 13}}>
+                  style={{textAlign: 'center', fontSize: 13, color: 'black'}}>
                   Cancelation policy
                 </Text>
               </View>
@@ -146,7 +153,7 @@ const Yacht = ({navigation,}) => {
               <View>
                 <Text
                   numberOfLines={2}
-                  style={{textAlign: 'center', fontSize: 13}}>
+                  style={{textAlign: 'center', fontSize: 13, color: 'black'}}>
                   Up to 12 passengers
                 </Text>
               </View>
@@ -164,7 +171,7 @@ const Yacht = ({navigation,}) => {
               <View>
                 <Text
                   numberOfLines={2}
-                  style={{textAlign: 'center', fontSize: 13}}>
+                  style={{textAlign: 'center', fontSize: 13, color: 'black'}}>
                   Captained
                 </Text>
               </View>
@@ -176,24 +183,32 @@ const Yacht = ({navigation,}) => {
               About
             </Text>
             <Space height={8} />
-            <Text style={{paddingLeft: 8, fontSize: 16, color: 'black'}}>
-              Greetings from Amwaj Al Bahar Boats and Yachts Chartering! 3
-              cabins, flying bridge, sun deck, living room, kitchen, etc.
-              Spacious outdoor and indoor areas. Large Flybridge with BBQ
-              Beautiful interior Soft drinks & water provided (guests are
-              permitted to bring other beverages of their choice). Friendly and
-              experienced crew Great for parties, gatherings, celebrations or
-              corporate team-building day out
-            </Text>
+            <View style={{height: aboutSize ? 'auto' : 80}}>
+              <Text style={{paddingLeft: 8, fontSize: 16, color: 'black'}}>
+                Greetings from Amwaj Al Bahar Boats and Yachts Chartering! 3
+                cabins, flying bridge, sun deck, living room, kitchen, etc.
+                Spacious outdoor and indoor areas. Large Flybridge with BBQ
+                Beautiful interior Soft drinks & water provided (guests are
+                permitted to bring other beverages of their choice). Friendly
+                and experienced crew Great for parties, gatherings, celebrations
+                or corporate team-building day out
+              </Text>
+            </View>
+
             <Space height={8} />
-            <Text
-              style={{
-                paddingLeft: 8,
-                textDecorationLine: 'underline',
-                color: '#246bbc',
+            <TouchableOpacity
+              onPress={() => {
+                setAboutSize(!aboutSize);
               }}>
-              View Less
-            </Text>
+              <Text
+                style={{
+                  paddingLeft: 8,
+                  textDecorationLine: 'underline',
+                  color: '#246bbc',
+                }}>
+                {aboutSize ? 'View less' : 'View more'}
+              </Text>
+            </TouchableOpacity>
           </View>
           <Space height={16} />
           <View style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
@@ -203,86 +218,99 @@ const Yacht = ({navigation,}) => {
               Features
             </Text>
             <Space height={8} />
-            <View style={{paddingLeft: 8}}>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>
-                  Air Conditioning
-                </Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
+            {featureSize ? (
+              <View style={{paddingLeft: 8}}>
+                <View>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>
+                      Air Conditioning
+                    </Text>
+                    <Image
+                      source={require('../assets/images/yes.png')}
+                      style={{width: 16, height: 16}}
+                    />
+                  </View>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>Anchor</Text>
+                    <Image
+                      source={require('../assets/images/no.png')}
+                      style={{width: 16, height: 16}}
+                    />
+                  </View>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>Bathroom</Text>
+                    <Image
+                      source={require('../assets/images/yes.png')}
+                      style={{width: 16, height: 16}}
+                    />
+                  </View>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>
+                      Cooler / Ice chest
+                    </Text>
+                    <Image
+                      source={require('../assets/images/yes.png')}
+                      style={{width: 16, height: 16}}
+                    />
+                  </View>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>
+                      Floating mat
+                    </Text>
+                    <Image
+                      source={require('../assets/images/no.png')}
+                      style={{width: 16, height: 16}}
+                    />
+                  </View>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>GPS</Text>
+                    <Image
+                      source={require('../assets/images/yes.png')}
+                      style={{width: 16, height: 16}}
+                    />
+                  </View>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>Shower</Text>
+                    <Image
+                      source={require('../assets/images/yes.png')}
+                      style={{width: 16, height: 16}}
+                    />
+                  </View>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>Stereo</Text>
+                    <Image
+                      source={require('../assets/images/yes.png')}
+                      style={{width: 16, height: 16}}
+                    />
+                  </View>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>
+                      Stereo Aux Input
+                    </Text>
+                    <Image
+                      source={require('../assets/images/yes.png')}
+                      style={{width: 16, height: 16}}
+                    />
+                  </View>
+                </View>
               </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Anchor</Text>
-                <Image
-                  source={require('../assets/images/no.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Bathroom</Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>
-                  Cooler / Ice chest
-                </Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Floating mat</Text>
-                <Image
-                  source={require('../assets/images/no.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>GPS</Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Shower</Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Stereo</Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>
-                  Stereo Aux Input
-                </Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-            </View>
+            ) : (
+              ''
+            )}
             <Space height={8} />
-            <Text
-              style={{
-                paddingLeft: 8,
-                textDecorationLine: 'underline',
-                color: '#246bbc',
+            <TouchableOpacity
+              onPress={() => {
+                setFeatureSize(!featureSize);
               }}>
-              View Less
-            </Text>
+              <Text
+                style={{
+                  paddingLeft: 8,
+                  textDecorationLine: 'underline',
+                  color: '#246bbc',
+                }}>
+                {featureSize ? 'View less' : 'View more'}
+              </Text>
+            </TouchableOpacity>
           </View>
           <Space height={16} />
           <View style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
@@ -294,42 +322,55 @@ const Yacht = ({navigation,}) => {
                   style={{color: '#246bbc', fontSize: 20, fontWeight: 'bold'}}>
                   Specification
                 </Text>
-                <Image
-                  source={require('../assets/images/up.png')}
-                  style={{width: 16, height: 16}}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    setSpecificationSize(!specificationSize);
+                  }}>
+                  <Image
+                    source={
+                      specificationSize
+                        ? require('../assets/images/up.png')
+                        : require('../assets/images/down.png')
+                    }
+                    style={{width: 16, height: 16}}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
 
             <Space height={8} />
-            <View style={{paddingLeft: 8}}>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Year</Text>
-                <Text style={{color: 'black', fontSize: 16}}>2009</Text>
+            {specificationSize ? (
+              <View style={{paddingLeft: 8}}>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>Year</Text>
+                  <Text style={{color: 'black', fontSize: 16}}>2009</Text>
+                </View>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>Length</Text>
+                  <Text style={{color: 'black', fontSize: 16}}>30 m</Text>
+                </View>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>Made by</Text>
+                  <Text style={{color: 'black', fontSize: 16}}>Beneteau</Text>
+                </View>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>Model</Text>
+                  <Text style={{color: 'black', fontSize: 16}}>Majesty</Text>
+                </View>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>Capacity</Text>
+                  <Text style={{color: 'black', fontSize: 16}}>
+                    Up to 12 people
+                  </Text>
+                </View>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>Yacht Type</Text>
+                  <Text style={{color: 'black', fontSize: 16}}>Flybridge</Text>
+                </View>
               </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Length</Text>
-                <Text style={{color: 'black', fontSize: 16}}>30 m</Text>
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Made by</Text>
-                <Text style={{color: 'black', fontSize: 16}}>Beneteau</Text>
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Model</Text>
-                <Text style={{color: 'black', fontSize: 16}}>Majesty</Text>
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Capacity</Text>
-                <Text style={{color: 'black', fontSize: 16}}>
-                  Up to 12 people
-                </Text>
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Yacht Type</Text>
-                <Text style={{color: 'black', fontSize: 16}}>Flybridge</Text>
-              </View>
-            </View>
+            ) : (
+              ''
+            )}
           </View>
           <Space height={16} />
           <View style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
@@ -610,14 +651,16 @@ const Yacht = ({navigation,}) => {
               </ScrollView>
             </View>
             <Space height={8} />
-            <Text
-              style={{
-                paddingLeft: 8,
-                textDecorationLine: 'underline',
-                color: '#246bbc',
-              }}>
-              View all
-            </Text>
+            <TouchableOpacity onPress={() => {}}>
+              <Text
+                style={{
+                  paddingLeft: 8,
+                  textDecorationLine: 'underline',
+                  color: '#246bbc',
+                }}>
+                View all
+              </Text>
+            </TouchableOpacity>
           </View>
           <Space height={16} />
           <View style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
@@ -637,86 +680,98 @@ const Yacht = ({navigation,}) => {
               Allowed on the yacht
             </Text>
             <Space height={8} />
-            <View style={{paddingLeft: 8}}>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>
-                  Air Conditioning
-                </Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
+            {allowSize ? (
+              <View style={{paddingLeft: 8}}>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>
+                    Air Conditioning
+                  </Text>
+                  <Image
+                    source={require('../assets/images/yes.png')}
+                    style={{width: 16, height: 16}}
+                  />
+                </View>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>Anchor</Text>
+                  <Image
+                    source={require('../assets/images/no.png')}
+                    style={{width: 16, height: 16}}
+                  />
+                </View>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>Bathroom</Text>
+                  <Image
+                    source={require('../assets/images/yes.png')}
+                    style={{width: 16, height: 16}}
+                  />
+                </View>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>
+                    Cooler / Ice chest
+                  </Text>
+                  <Image
+                    source={require('../assets/images/yes.png')}
+                    style={{width: 16, height: 16}}
+                  />
+                </View>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>
+                    Floating mat
+                  </Text>
+                  <Image
+                    source={require('../assets/images/no.png')}
+                    style={{width: 16, height: 16}}
+                  />
+                </View>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>GPS</Text>
+                  <Image
+                    source={require('../assets/images/yes.png')}
+                    style={{width: 16, height: 16}}
+                  />
+                </View>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>Shower</Text>
+                  <Image
+                    source={require('../assets/images/yes.png')}
+                    style={{width: 16, height: 16}}
+                  />
+                </View>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>Stereo</Text>
+                  <Image
+                    source={require('../assets/images/yes.png')}
+                    style={{width: 16, height: 16}}
+                  />
+                </View>
+                <View style={styles.float}>
+                  <Text style={{color: 'black', fontSize: 16}}>
+                    Stereo Aux Input
+                  </Text>
+                  <Image
+                    source={require('../assets/images/yes.png')}
+                    style={{width: 16, height: 16}}
+                  />
+                </View>
               </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Anchor</Text>
-                <Image
-                  source={require('../assets/images/no.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Bathroom</Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>
-                  Cooler / Ice chest
-                </Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Floating mat</Text>
-                <Image
-                  source={require('../assets/images/no.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>GPS</Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Shower</Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>Stereo</Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>
-                  Stereo Aux Input
-                </Text>
-                <Image
-                  source={require('../assets/images/yes.png')}
-                  style={{width: 16, height: 16}}
-                />
-              </View>
-            </View>
+            ) : (
+              ''
+            )}
+
             <Space height={8} />
-            <Text
-              style={{
-                paddingLeft: 8,
-                textDecorationLine: 'underline',
-                color: '#246bbc',
+            <TouchableOpacity
+              onPress={() => {
+                setAllowSize(!allowSize);
               }}>
-              View Less
-            </Text>
+              <Text
+                style={{
+                  paddingLeft: 8,
+                  textDecorationLine: 'underline',
+                  color: '#246bbc',
+                }}>
+                {allowSize ? 'View Less' : 'View More'}
+              </Text>
+            </TouchableOpacity>
           </View>
           <Space height={16} />
           <View style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
@@ -728,48 +783,64 @@ const Yacht = ({navigation,}) => {
                   style={{color: '#246bbc', fontSize: 20, fontWeight: 'bold'}}>
                   Cancellation
                 </Text>
-                <Image
-                  source={require('../assets/images/up.png')}
-                  style={{width: 16, height: 16}}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    setCancellationSize(!cancellationSize);
+                  }}>
+                  <Image
+                    source={
+                      cancellationSize
+                        ? require('../assets/images/up.png')
+                        : require('../assets/images/down.png')
+                    }
+                    style={{width: 16, height: 16}}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
 
             <Space height={8} />
-            <View style={{paddingLeft: 8}}>
-              <View>
-                <Text style={{color: 'black', fontSize: 16}}>
-                  {' '}
-                  - Free cancellations until 5 days before the booking start
-                  time
-                </Text>
+            {cancellationSize ? (
+              <View style={{paddingLeft: 8}}>
+                <View>
+                  <Text style={{color: 'black', fontSize: 16}}>
+                    {' '}
+                    - Free cancellations until 5 days before the booking start
+                    time
+                  </Text>
+                </View>
+                <Space height={4} />
+                <View>
+                  <Text style={{color: 'black', fontSize: 16}}>
+                    {' '}
+                    - 50% refund for cancellations between 3-5 days before the
+                    booking start time
+                  </Text>
+                </View>
+                <Space height={4} />
+                <View>
+                  <Text style={{color: 'black', fontSize: 16}}>
+                    {' '}
+                    - Cancellations within 2 days of the booking start time are
+                    non-refundable
+                  </Text>
+                </View>
               </View>
-              <Space height={4} />
-              <View>
-                <Text style={{color: 'black', fontSize: 16}}>
-                  {' '}
-                  - 50% refund for cancellations between 3-5 days before the
-                  booking start time
-                </Text>
-              </View>
-              <Space height={4} />
-              <View>
-                <Text style={{color: 'black', fontSize: 16}}>
-                  {' '}
-                  - Cancellations within 2 days of the booking start time are
-                  non-refundable
-                </Text>
-              </View>
-            </View>
+            ) : (
+              ''
+            )}
+
             <Space height={8} />
-            <Text
-              style={{
-                paddingLeft: 8,
-                textDecorationLine: 'underline',
-                color: '#246bbc',
-              }}>
-              See policy
-            </Text>
+            <TouchableOpacity onPress={() => {}}>
+              <Text
+                style={{
+                  paddingLeft: 8,
+                  textDecorationLine: 'underline',
+                  color: '#246bbc',
+                }}>
+                See policy
+              </Text>
+            </TouchableOpacity>
           </View>
           <Space height={16} />
           <View style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
@@ -781,33 +852,49 @@ const Yacht = ({navigation,}) => {
                   style={{color: '#246bbc', fontSize: 20, fontWeight: 'bold'}}>
                   Security deposit
                 </Text>
-                <Image
-                  source={require('../assets/images/up.png')}
-                  style={{width: 16, height: 16}}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    setDepositSize(!depositSize);
+                  }}>
+                  <Image
+                    source={
+                      depositSize
+                        ? require('../assets/images/up.png')
+                        : require('../assets/images/down.png')
+                    }
+                    style={{width: 16, height: 16}}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
 
             <Space height={8} />
-            <View style={{paddingLeft: 8}}>
-              <Text style={{color: 'black', fontSize: 16}}>
-                A security deposit hold (not a charge) will be placed on your
-                credit card 48 hours before you booking starts to cover any
-                incidental damage that may accur during your rental. This hold
-                is replaced 48 hours after the booking is complete, if no claims
-                are made. The security deposit amount for the yacht you are
-                booking will be outlined during the check-out process.
-              </Text>
-            </View>
+            {depositSize ? (
+              <View style={{paddingLeft: 8}}>
+                <Text style={{color: 'black', fontSize: 16}}>
+                  A security deposit hold (not a charge) will be placed on your
+                  credit card 48 hours before you booking starts to cover any
+                  incidental damage that may accur during your rental. This hold
+                  is replaced 48 hours after the booking is complete, if no
+                  claims are made. The security deposit amount for the yacht you
+                  are booking will be outlined during the check-out process.
+                </Text>
+              </View>
+            ) : (
+              ''
+            )}
+
             <Space height={8} />
-            <Text
-              style={{
-                paddingLeft: 8,
-                textDecorationLine: 'underline',
-                color: '#246bbc',
-              }}>
-              Learn more
-            </Text>
+            <TouchableOpacity onPress={() => {}}>
+              <Text
+                style={{
+                  paddingLeft: 8,
+                  textDecorationLine: 'underline',
+                  color: '#246bbc',
+                }}>
+                Learn more
+              </Text>
+            </TouchableOpacity>
           </View>
           <Space height={16} />
           <View style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
@@ -819,22 +906,35 @@ const Yacht = ({navigation,}) => {
                   style={{color: '#246bbc', fontSize: 20, fontWeight: 'bold'}}>
                   Captain info
                 </Text>
-                <Image
-                  source={require('../assets/images/up.png')}
-                  style={{width: 16, height: 16}}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    setCaptainInfoSize(!captainInfoSize);
+                  }}>
+                  <Image
+                    source={
+                      captainInfoSize
+                        ? require('../assets/images/up.png')
+                        : require('../assets/images/down.png')
+                    }
+                    style={{width: 16, height: 16}}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
 
             <Space height={8} />
-            <View style={{paddingLeft: 8}}>
-              <Text style={{color: 'black', fontSize: 16}}>
-                If requested, the owner can provide a list of available captains
-                for bareboat charter, or the renter can use their own qualified
-                captain. if the yacht is being time chartered, the owner will
-                provide the Captain.
-              </Text>
-            </View>
+            {captainInfoSize ? (
+              <View style={{paddingLeft: 8}}>
+                <Text style={{color: 'black', fontSize: 16}}>
+                  If requested, the owner can provide a list of available
+                  captains for bareboat charter, or the renter can use their own
+                  qualified captain. if the yacht is being time chartered, the
+                  owner will provide the Captain.
+                </Text>
+              </View>
+            ) : (
+              ''
+            )}
           </View>
           <Space height={16} />
           <View style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
@@ -846,50 +946,113 @@ const Yacht = ({navigation,}) => {
                   style={{color: '#246bbc', fontSize: 20, fontWeight: 'bold'}}>
                   Booking options
                 </Text>
-                <Image
-                  source={require('../assets/images/up.png')}
-                  style={{width: 16, height: 16}}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    setBookingSize(!bookingSize);
+                  }}>
+                  <Image
+                    source={
+                      bookingSize
+                        ? require('../assets/images/up.png')
+                        : require('../assets/images/down.png')
+                    }
+                    style={{width: 16, height: 16}}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
             <Space height={8} />
-            <Text
-              style={{
-                paddingLeft: 8,
-                color: 'black',
-                fontSize: 16,
-                fontWeight: 'bold',
-              }}>
-              Captained
-            </Text>
+            {bookingSize ? (
+              <View>
+                <Text
+                  style={{
+                    paddingLeft: 8,
+                    color: 'black',
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                  }}>
+                  Captained
+                </Text>
 
-            <Space height={8} />
-            <View style={{paddingLeft: 8}}>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>2 hours</Text>
-                <Text style={{color: 'black', fontSize: 16}}>$ 575</Text>
+                <Space height={8} />
+                <View style={{paddingLeft: 8}}>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>2 hours</Text>
+                    <Text style={{color: 'black', fontSize: 16}}>$ 575</Text>
+                  </View>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>3 hours</Text>
+                    <Text style={{color: 'black', fontSize: 16}}>$ 845</Text>
+                  </View>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>4 hours</Text>
+                    <Text style={{color: 'black', fontSize: 16}}>$ 1100</Text>
+                  </View>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>6 hours</Text>
+                    <Text style={{color: 'black', fontSize: 16}}>$ 1685</Text>
+                  </View>
+                  <View style={styles.float}>
+                    <Text style={{color: 'black', fontSize: 16}}>8 hours</Text>
+                    <Text style={{color: 'black', fontSize: 16}}>$ 2200</Text>
+                  </View>
+                </View>
               </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>3 hours</Text>
-                <Text style={{color: 'black', fontSize: 16}}>$ 845</Text>
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>4 hours</Text>
-                <Text style={{color: 'black', fontSize: 16}}>$ 1100</Text>
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>6 hours</Text>
-                <Text style={{color: 'black', fontSize: 16}}>$ 1685</Text>
-              </View>
-              <View style={styles.float}>
-                <Text style={{color: 'black', fontSize: 16}}>8 hours</Text>
-                <Text style={{color: 'black', fontSize: 16}}>$ 2200</Text>
-              </View>
-            </View>
+            ) : (
+              ''
+            )}
           </View>
           <Space height={16} />
           <View style={{borderBottomWidth: 2, borderStyle: 'dashed'}}></View>
           <Space height={16} />
+          <View>
+            <View>
+              <View style={[styles.float, {alignItems: 'center'}]}>
+                <Text
+                  style={{color: '#246bbc', fontSize: 20, fontWeight: 'bold'}}>
+                  Owner
+                </Text>
+              </View>
+            </View>
+            <Space height={16} />
+            <View style={styles.float}>
+              <View style={{flexDirection: 'row'}}>
+                <Image
+                  source={{uri: CONFIG.API_URL + 'asset/avatars/1.png'}}
+                  style={{
+                    marginLeft: 8,
+                    width: 48,
+                    height: 48,
+                    borderRadius: 24,
+                    borderColor: '#246bbc',
+                    borderWidth: 1,
+                    padding: 16,
+                  }}
+                />
+                <View style={{marginLeft: 8, alignContent: 'center'}}>
+                  <Text
+                    style={{fontSize: 20, fontWeight: 'bold', color: 'black'}}>
+                    Salih
+                  </Text>
+                  <Text style={{fontSize: 16, color: 'black'}}>
+                    971-50-1234567
+                  </Text>
+                </View>
+              </View>
+              <View>
+                <IconTextButton
+                  title="Direct Message"
+                  hasIcon={true}
+                  icon={require('../assets/images/comment.png')}
+                  onPress={() => {
+                    navigation.navigate('Contact');
+                  }}
+                />
+              </View>
+            </View>
+
+            <Space height={16} />
+          </View>
         </View>
       </ScrollView>
       <View style={styles.bottomBar}>

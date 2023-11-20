@@ -93,222 +93,380 @@ const Booking = ({navigation}) => {
             </View>
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingVertical: 16,
-            paddingHorizontal: 32,
-          }}>
-          <Image
-            source={require('../assets/images/yacht_2.png')}
-            style={{width: 60, height: 60, borderRadius: 60}}
-          />
-          <Space width={16} />
-          <View style={{justifyContent: 'center'}}>
-            <View>
-              <Text
-                style={{fontSize: 16, fontWeight: 'bold', color: '#093373'}}>
-                Luxury 60 Feet Majesty YACHT{' '}
-              </Text>
-            </View>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
-                $1800,
-              </Text>
-              <Space width={4} />
-              <Text style={{fontSize: 16, color: 'black'}}>
-                &nbsp; 6hrs, 10/03/2023 10:00
-              </Text>
-            </View>
-            <Space height={8} />
-            {!order ? (
-              <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-                <TouchableOpacity onPress={() => setOrder(true)}>
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      paddingVertical: 2,
-                      paddingHorizontal: 4,
-                      borderWidth: 1,
-                      borderColor: '#FF264F',
-                      borderRadius: 4,
-                      width: 90,
-                    }}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color: '#FF264F',
-                      }}>
-                      Cancel
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <Space width={8} />
 
-                <TouchableOpacity onPress={() => setOrder(true)}>
+        {tab == 0 ? (
+          <>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                paddingVertical: 20,
+              }}>
+              <Image
+                source={require('../assets/images/yacht_2.png')}
+                style={{width: 60, height: 60, borderRadius: 60}}
+              />
+              <Space width={16} />
+              <View style={{justifyContent: 'center'}}>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#093373',
+                    }}>
+                    Luxury 60 Feet Majesty YACHT{' '}
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
+                    $1800,
+                  </Text>
+                  <Space width={4} />
+                  <Text style={{fontSize: 16, color: 'black'}}>
+                    &nbsp; 6hrs, 10/03/2023 10:00
+                  </Text>
+                </View>
+                <Space height={8} />
+                {!order ? (
+                  <View
+                    style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                    <TouchableOpacity onPress={() => setOrder(true)}>
+                      <View
+                        style={{
+                          backgroundColor: 'white',
+                          paddingVertical: 2,
+                          paddingHorizontal: 4,
+                          borderWidth: 1,
+                          borderColor: '#FF264F',
+                          borderRadius: 4,
+                          width: 90,
+                        }}>
+                        <Text
+                          style={{
+                            textAlign: 'center',
+                            color: '#FF264F',
+                          }}>
+                          Cancel
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                    <Space width={8} />
+
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('Book')}>
+                      <View
+                        style={{
+                          backgroundColor: 'white',
+                          paddingVertical: 2,
+                          paddingHorizontal: 4,
+                          borderWidth: 1,
+                          borderColor: '#003580',
+                          borderRadius: 4,
+                          width: 90,
+                        }}>
+                        <Text
+                          style={{
+                            textAlign: 'center',
+                            color: '#003580',
+                          }}>
+                          Reschedule
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
                   <View
                     style={{
-                      backgroundColor: 'white',
-                      paddingVertical: 2,
-                      paddingHorizontal: 4,
-                      borderWidth: 1,
-                      borderColor: '#003580',
-                      borderRadius: 4,
-                      width: 90,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
                     }}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color: '#003580',
-                      }}>
-                      Reschedule
-                    </Text>
+                    <View></View>
+                    <TouchableOpacity onPress={() => setOrder(false)}>
+                      <View
+                        style={{
+                          backgroundColor: 'white',
+                          paddingVertical: 2,
+                          paddingHorizontal: 4,
+                          borderWidth: 1,
+                          borderColor: '#003580',
+                          borderRadius: 4,
+                          width: 90,
+                        }}>
+                        <Text
+                          style={{
+                            textAlign: 'center',
+                            color: '#003580',
+                          }}>
+                          Reorder
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
                   </View>
-                </TouchableOpacity>
+                )}
               </View>
-            ) : (
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <View></View>
-                <TouchableOpacity onPress={() => setOrder(false)}>
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      paddingVertical: 2,
-                      paddingHorizontal: 4,
-                      borderWidth: 1,
-                      borderColor: '#003580',
-                      borderRadius: 4,
-                      width: 90,
-                    }}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color: '#003580',
-                      }}>
-                      Reorder
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        </View>
-        <Space height={8} />
-        <View
-          style={{
-            borderColor: 'black',
-            borderBottomWidth: 0.5,
-            borderStyle: 'solid',
-          }}></View>
-        <Space height={8} />
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingVertical: 16,
-            paddingHorizontal: 32,
-          }}>
-          <Image
-            source={require('../assets/images/yacht_2.png')}
-            style={{width: 60, height: 60, borderRadius: 60}}
-          />
-          <Space width={16} />
-          <View style={{justifyContent: 'center'}}>
-            <View>
-              <Text
-                style={{fontSize: 16, fontWeight: 'bold', color: '#093373'}}>
-                Luxury 60 Feet Majesty YACHT{' '}
-              </Text>
-            </View>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
-                $1800,
-              </Text>
-              <Space width={4} />
-              <Text style={{fontSize: 16, color: 'black'}}>
-                &nbsp; 6hrs, 10/03/2023 10:00
-              </Text>
             </View>
             <Space height={8} />
-            {!order1 ? (
-              <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-                <TouchableOpacity onPress={() => setOrder1(true)}>
+            <View
+              style={{
+                borderColor: 'black',
+                borderBottomWidth: 0.5,
+                borderStyle: 'solid',
+              }}></View>
+            <Space height={8} />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                paddingVertical: 20,
+              }}>
+              <Image
+                source={require('../assets/images/yacht_2.png')}
+                style={{width: 60, height: 60, borderRadius: 60}}
+              />
+              <Space width={16} />
+              <View style={{justifyContent: 'center'}}>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#093373',
+                    }}>
+                    Luxury 60 Feet Majesty YACHT{' '}
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
+                    $1800,
+                  </Text>
+                  <Space width={4} />
+                  <Text style={{fontSize: 16, color: 'black'}}>
+                    &nbsp; 6hrs, 10/03/2023 10:00
+                  </Text>
+                </View>
+                <Space height={8} />
+                {!order1 ? (
+                  <View
+                    style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                    <TouchableOpacity onPress={() => setOrder1(true)}>
+                      <View
+                        style={{
+                          backgroundColor: 'white',
+                          paddingVertical: 2,
+                          paddingHorizontal: 4,
+                          borderWidth: 1,
+                          borderColor: '#FF264F',
+                          borderRadius: 4,
+                          width: 90,
+                        }}>
+                        <Text
+                          style={{
+                            textAlign: 'center',
+                            color: '#FF264F',
+                          }}>
+                          Cancel
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                    <Space width={8} />
+                    <TouchableOpacity onPress={() => navigation.navigate('Book')}>
+                      <View
+                        style={{
+                          backgroundColor: 'white',
+                          paddingVertical: 2,
+                          paddingHorizontal: 4,
+                          borderWidth: 1,
+                          borderColor: '#003580',
+                          borderRadius: 4,
+                          width: 90,
+                        }}>
+                        <Text
+                          style={{
+                            textAlign: 'center',
+                            color: '#003580',
+                          }}>
+                          Reschedule
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
                   <View
                     style={{
-                      backgroundColor: 'white',
-                      paddingVertical: 2,
-                      paddingHorizontal: 4,
-                      borderWidth: 1,
-                      borderColor: '#FF264F',
-                      borderRadius: 4,
-                      width: 90,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
                     }}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color: '#FF264F',
-                      }}>
-                      Cancel
-                    </Text>
+                    <View></View>
+                    <TouchableOpacity onPress={() => setOrder1(false)}>
+                      <View
+                        style={{
+                          backgroundColor: 'white',
+                          paddingVertical: 2,
+                          paddingHorizontal: 4,
+                          borderWidth: 1,
+                          borderColor: '#003580',
+                          borderRadius: 4,
+                          width: 90,
+                        }}>
+                        <Text
+                          style={{
+                            textAlign: 'center',
+                            color: '#003580',
+                          }}>
+                          Reorder
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
                   </View>
-                </TouchableOpacity>
-                <Space width={8} />
-                <TouchableOpacity onPress={() => setOrder1(true)}>
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      paddingVertical: 2,
-                      paddingHorizontal: 4,
-                      borderWidth: 1,
-                      borderColor: '#003580',
-                      borderRadius: 4,
-                      width: 90,
-                    }}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color: '#003580',
-                      }}>
-                      Reschedule
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+                )}
               </View>
-            ) : (
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <View></View>
-                <TouchableOpacity onPress={() => setOrder1(false)}>
-                  <View
+            </View>
+            <Space height={8} />
+            <View
+              style={{
+                borderColor: 'black',
+                borderBottomWidth: 0.5,
+                borderStyle: 'solid',
+              }}></View>
+          </>
+        ) : tab == 1 ? (
+          <>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                paddingVertical: 20,
+              }}>
+              <Image
+                source={require('../assets/images/yacht_2.png')}
+                style={{width: 60, height: 60, borderRadius: 60}}
+              />
+              <Space width={16} />
+              <View style={{justifyContent: 'center'}}>
+                <View>
+                  <Text
                     style={{
-                      backgroundColor: 'white',
-                      paddingVertical: 2,
-                      paddingHorizontal: 4,
-                      borderWidth: 1,
-                      borderColor: '#003580',
-                      borderRadius: 4,
-                      width: 90,
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#093373',
                     }}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color: '#003580',
-                      }}>
-                      Reorder
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+                    Luxury 60 Feet Majesty YACHT{' '}
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
+                    $1800,
+                  </Text>
+                  <Space width={4} />
+                  <Text style={{fontSize: 16, color: 'black'}}>
+                    &nbsp; 6hrs, 10/03/2023 10:00
+                  </Text>
+                </View>
+                <Space height={8} />
               </View>
-            )}
-          </View>
-        </View>
-        <Space height={8} />
-        <View
-          style={{
-            borderColor: 'black',
-            borderBottomWidth: 0.5,
-            borderStyle: 'solid',
-          }}></View>
+            </View>
+            <Space height={8} />
+            <View
+              style={{
+                borderColor: 'black',
+                borderBottomWidth: 0.5,
+                borderStyle: 'solid',
+              }}></View>
+            <Space height={8} />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                paddingVertical: 20,
+              }}>
+              <Image
+                source={require('../assets/images/yacht_2.png')}
+                style={{width: 60, height: 60, borderRadius: 60}}
+              />
+              <Space width={16} />
+              <View style={{justifyContent: 'center'}}>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#093373',
+                    }}>
+                    Luxury 60 Feet Majesty YACHT{' '}
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
+                    $1800,
+                  </Text>
+                  <Space width={4} />
+                  <Text style={{fontSize: 16, color: 'black'}}>
+                    &nbsp; 6hrs, 10/03/2023 10:00
+                  </Text>
+                </View>
+                <Space height={8} />
+              </View>
+            </View>
+            <Space height={8} />
+            <View
+              style={{
+                borderColor: 'black',
+                borderBottomWidth: 0.5,
+                borderStyle: 'solid',
+              }}></View>
+          </>
+        ) : (
+          <>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                paddingVertical: 20,
+              }}>
+              <Image
+                source={require('../assets/images/yacht_2.png')}
+                style={{width: 60, height: 60, borderRadius: 60}}
+              />
+              <Space width={16} />
+              <View style={{justifyContent: 'center'}}>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#093373',
+                    }}>
+                    Luxury 60 Feet Majesty YACHT{' '}
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <Text
+                    style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
+                    $1800,
+                  </Text>
+                  <Space width={4} />
+                  <Text style={{fontSize: 16, color: 'black'}}>
+                    &nbsp; 6hrs, 10/03/2023 10:00
+                  </Text>
+                </View>
+                <Space height={8} />
+              </View>
+            </View>
+            <Space height={8} />
+            <View
+              style={{
+                borderColor: 'black',
+                borderBottomWidth: 0.5,
+                borderStyle: 'solid',
+              }}></View>
+            <Space height={8} />
+          </>
+        )}
       </ScrollView>
       <View style={styles.bottomBar}>
         <TouchableOpacity
@@ -320,7 +478,7 @@ const Booking = ({navigation}) => {
               source={require('../assets/images/heart.png')}
               style={{width: 22, height: 22}}
             />
-            <Text style={{fontSize: 13}}>Favourites</Text>
+            <Text style={{fontSize: 13, color: 'black'}}>Favourites</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -332,7 +490,7 @@ const Booking = ({navigation}) => {
               source={require('../assets/images/message.png')}
               style={{width: 24, height: 22}}
             />
-            <Text style={{fontSize: 13}}>Messages</Text>
+            <Text style={{fontSize: 13, color: 'black'}}>Messages</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -344,7 +502,7 @@ const Booking = ({navigation}) => {
               source={require('../assets/images/search.png')}
               style={{width: 20, height: 22}}
             />
-            <Text style={{fontSize: 13}}>Search</Text>
+            <Text style={{fontSize: 13, color: 'black'}}>Search</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -368,7 +526,7 @@ const Booking = ({navigation}) => {
               source={require('../assets/images/profile.png')}
               style={{width: 15, height: 22}}
             />
-            <Text style={{fontSize: 13}}>Profile</Text>
+            <Text style={{fontSize: 13, color: 'black'}}>Profile</Text>
           </View>
         </TouchableOpacity>
       </View>

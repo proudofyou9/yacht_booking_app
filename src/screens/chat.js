@@ -18,23 +18,23 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import TextButton from '../components/TextButton';
 import {auth, getAuth} from '@react-native-firebase/auth';
 import firestore, {Filter} from '@react-native-firebase/firestore';
-import firebase from "@react-native-firebase/app"
+import firebase from '@react-native-firebase/app';
 import firebaseConfig from '../firebase';
 
-const Chat = (props) => {
+const Chat = props => {
   const navigation = props.navigation;
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState([]);
   const [receiver, setReceiver] = useState([]);
-  
+
   const scrollViewRef = useRef();
 
   useEffect(() => {
     scrollViewRef.current.scrollToEnd({animated: true});
-    setUser(getAuth().currentUser)
-    setReceiver(props.route.params.receiver)
-    getAllMessages()
+    setUser(getAuth().currentUser);
+    setReceiver(props.route.params.receiver);
+    getAllMessages();
   }, []);
 
   const getAllMessages = async () => {
@@ -48,6 +48,7 @@ const Chat = (props) => {
         createdAt: docSanp.data().createdAt,
       };
     });
+    console.log(allTheMsgs[0]);
     setMessages(allTheMsgs);
     scrollViewRef.current.scrollToEnd({animated: true});
   };
@@ -57,12 +58,14 @@ const Chat = (props) => {
       message,
       sentBy: user.uid,
       sentTo: receiver.uid,
-      createdAt: new Date()
-    }
+      createdAt: new Date(),
+    };
     // setMessages(previousMessages => GiftedChat.append(previousMessages, usermsg))
-    firestore().collection('chats')
-    .add({...usermsg,createdAt:firestore.FieldValue.serverTimestamp()})
-    getAllMessages()
+    firestore()
+      .collection('chats')
+      .add({...usermsg, createdAt: firestore.FieldValue.serverTimestamp()});
+    getAllMessages();
+    setMessage('');
   };
 
   return (
@@ -95,84 +98,100 @@ const Chat = (props) => {
               marginHorizontal: 10,
               paddingHorizontal: 10,
             }}></View>
-          <Text>TODAY</Text>
+          <Text style={{color: 'rgba(0,0,0,0.3)'}}>TODAY</Text>
         </View>
         <Space height={16} />
-        {messages.length == 0 ?
-        (<View>
-          <Text style={{textAlign: 'center'}}>There is no history.</Text>
-        </View>) :
-        (messages.map((message, index) => (
-          <View key={index}>
-            <View
-              style={{
-                flexDirection: (!message.sentBy == user.uid) ? 'row' : '',
-                alignItems: 'flex-end',
-              }}>
-              {(!message.sentBy == user.uid) ? (
-                <Image
-                  source={require('../assets/images/avatar.png')}
-                  style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 16,
-                    borderColor: 'black',
-                    borderWidth: 1,
-                  }}
-                />
-              ) : (
-                <></>
-              )}
-
-              {((message.sentBy == user.uid && message.sentTo == receiver.uid) || (message.sentBy == receiver.uid && message.sentTo == user.uid)) ? 
-                (<View
-                  key={message}
-                  style={[
-                    styles.messageContainer,
-                    message.sentBy == user.uid
-                      ? styles.sentMessageContainer
-                      : styles.getMessageContainer,
-                  ]}>
-                  <Text style={{fontSize: 16, color: 'black'}}>
-                    {message.message}
-                  </Text>
-                  <Space height={4} />
-                  {message.sentBy == user.uid ? (
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
-                      <View></View>
-                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text
-                          style={message.sentBy == user.uid ? styles.sentTime : styles.getTime}>
-                          11:00am
-                        </Text>
-                        <Space width={message.sentBy == user.uid ? 4 : 0} />
-                        {message.sentBy == user.uid ? (
-                          <Image
-                            source={require('../assets/images/doublecheck.png')}
-                            style={styles.sentTime}
-                          />
-                        ) : (
-                          ({})
-                        )}
-                      </View>
-                    </View>
-                  ) : (
-                    <Text style={message.sentBy == user.uid ? styles.sentTime : styles.getTime}>
-                      11:00am
-                    </Text>
-                  )}
-                </View>)
-                : <></>    
-              }
-            </View>
-
-            <Space height={16} />
+        {messages.length == 0 ? (
+          <View>
+            <Text style={{textAlign: 'center'}}>There is no history.</Text>
           </View>
-        )))}
+        ) : (
+          messages.map((message, index) => (
+            <View key={index}>
+              <View
+                style={{
+                  flexDirection: !message.sentBy == user.uid ? 'row' : '',
+                  alignItems: 'flex-end',
+                }}>
+                {!message.sentBy == user.uid ? (
+                  <Image
+                    source={require('../assets/images/avatar.png')}
+                    style={{
+                      width: 30,
+                      height: 30,
+                      borderRadius: 16,
+                      borderColor: 'black',
+                      borderWidth: 1,
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
+
+                {(message.sentBy == user.uid &&
+                  message.sentTo == receiver.uid) ||
+                (message.sentBy == receiver.uid &&
+                  message.sentTo == user.uid) ? (
+                  <View
+                    key={message}
+                    style={[
+                      styles.messageContainer,
+                      message.sentBy == user.uid
+                        ? styles.sentMessageContainer
+                        : styles.getMessageContainer,
+                    ]}>
+                    <Text style={{fontSize: 16, color: 'black'}}>
+                      {message.message}
+                    </Text>
+                    <Space height={4} />
+                    {message.sentBy == user.uid ? (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <View></View>
+                        <View
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
+                          <Text
+                            style={
+                              message.sentBy == user.uid
+                                ? styles.sentTime
+                                : styles.getTime
+                            }>
+                            11:00am
+                          </Text>
+                          <Space width={message.sentBy == user.uid ? 4 : 0} />
+                          {message.sentBy == user.uid ? (
+                            <Image
+                              source={require('../assets/images/doublecheck.png')}
+                              style={styles.sentTime}
+                            />
+                          ) : (
+                            {}
+                          )}
+                        </View>
+                      </View>
+                    ) : (
+                      <Text
+                        style={
+                          message.sentBy == user.uid
+                            ? styles.sentTime
+                            : styles.getTime
+                        }>
+                        11:00am
+                      </Text>
+                    )}
+                  </View>
+                ) : (
+                  <></>
+                )}
+              </View>
+
+              <Space height={16} />
+            </View>
+          ))
+        )}
       </ScrollView>
       <View style={styles.inputContainer}>
         <TextInput
@@ -180,7 +199,8 @@ const Chat = (props) => {
           value={message}
           onChangeText={setMessage}
           placeholder="Type a message..."
-        />
+          placeholderTextColor={'#6A7380'}
+          />
         <TouchableOpacity onPress={onSend}>
           <Image
             source={require('../assets/images/forward.png')}
@@ -263,10 +283,12 @@ const styles = StyleSheet.create({
     // alignItems: 'flex-end',
   },
   getTime: {
+    color: '#6A7380'
     // textAlign: 'left',
   },
 
   sentTime: {
+    color: '#6A7380'
     // textAlign: 'right',
   },
   inputContainer: {
@@ -286,6 +308,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 16,
     paddingVertical: 8,
+    color: '#6A7380'
   },
 });
 

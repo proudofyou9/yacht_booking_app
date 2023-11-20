@@ -20,7 +20,6 @@ const Payment = ({navigation}) => {
   const [card, setCard] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [CVV, setCVV] = useState('');
-
   const {confirmPayment, loading} = useConfirmPayment();
 
   const fetchPaymentIntentClientSecret = async () => {
@@ -40,11 +39,11 @@ const Payment = ({navigation}) => {
   };
 
   const handlePayPress = async () => {
-    if (!card) {
+    if (!validation()) {
       return;
     }
-    alert('Success!', 'You successfully booked!');
-    navigation.replace("Search")
+    alert('You successfully booked!');
+    navigation.replace('Search');
 
     // const clientSecret = await fetchPaymentIntentClientSecret();
 
@@ -61,6 +60,30 @@ const Payment = ({navigation}) => {
     // } else if (paymentIntent) {
     //   console.log('Success from promise', paymentIntent);
     // }
+  };
+
+  const validation = () => {
+    if (firstName == '') {
+      alert(['Please input firstname.']);
+      return false;
+    }
+    if (lastName == '') {
+      alert('Please input lastname.');
+      return false;
+    }
+    if (card == '') {
+      alert('Please input card number.');
+      return false;
+    }
+    if (expirationDate == '') {
+      alert( 'Please input expiration date.');
+      return false;
+    }
+    if (CVV == '') {
+      alert('Please input CVV.');
+      return false;
+    }
+    return true;
   };
 
   return (
@@ -199,6 +222,7 @@ const Payment = ({navigation}) => {
                       value={firstName}
                       onChangeText={setFirstName}
                       placeholder="Enter first name"
+                      placeholderTextColor={'rgba(0,0,0,0.5)'}
                     />
                   </View>
                   <Space width={8} />
@@ -209,6 +233,7 @@ const Payment = ({navigation}) => {
                       style={styles.input}
                       value={lastName}
                       onChangeText={setLastName}
+                      placeholderTextColor={'rgba(0,0,0,0.5)'}
                       placeholder="Enter last name"
                     />
                   </View>
@@ -217,6 +242,26 @@ const Payment = ({navigation}) => {
                 <View>
                   <View style={styles.float}>
                     <Text>Card Number</Text>
+                    <View style={{flexDirection: 'row'}}>
+                      <TouchableOpacity onPress={() => {}}>
+                        <Image
+                          source={require('../assets/images/visa.png')}
+                          style={{width: 36, height: 24, marginLeft: 4}}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => {}}>
+                        <Image
+                          source={require('../assets/images/mastercard.png')}
+                          style={{width: 36, height: 24, marginLeft: 4}}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => {}}>
+                        <Image
+                          source={require('../assets/images/amex.png')}
+                          style={{width: 36, height: 24, marginLeft: 4}}
+                        />
+                      </TouchableOpacity>
+                    </View>
                     {/* <CardField
                       postalCodeEnabled={true}
                       placeholders={{
@@ -245,6 +290,7 @@ const Payment = ({navigation}) => {
                     value={card}
                     onChangeText={setCard}
                     placeholder="1234-1234-1234-1234"
+                    placeholderTextColor={'rgba(0,0,0,0.5)'}
                   />
                 </View>
                 <Space height={16} />
@@ -257,6 +303,7 @@ const Payment = ({navigation}) => {
                       value={expirationDate}
                       onChangeText={setExpirationDate}
                       placeholder="MM/YY"
+                      placeholderTextColor={'rgba(0,0,0,0.5)'}
                     />
                   </View>
                   <View>
@@ -267,6 +314,7 @@ const Payment = ({navigation}) => {
                       value={CVV}
                       onChangeText={setCVV}
                       placeholder="CVV"
+                      placeholderTextColor={'rgba(0,0,0,0.5)'}
                     />
                   </View>
                 </View>
@@ -278,7 +326,11 @@ const Payment = ({navigation}) => {
         <View style={styles.bottomBar}>
           <TouchableOpacity style={styles.tab}>
             <View style={{flexDirection: 'row', paddingVertical: 8}}>
-              <IconTextButton title="Validate and pay $1,800" hasIcon={false} onPress={handlePayPress} />
+              <IconTextButton
+                title="Validate and pay $1,800"
+                hasIcon={false}
+                onPress={handlePayPress}
+              />
             </View>
           </TouchableOpacity>
         </View>

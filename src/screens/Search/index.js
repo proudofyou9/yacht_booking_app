@@ -39,7 +39,7 @@ const Search = ({navigation}) => {
               source={require('../../assets/images/heart.png')}
               style={{width: 22, height: 22}}
             />
-            <Text style={{fontSize: 12}}>Favourites</Text>
+            <Text style={{fontSize: 12, color: 'black'}}>Favourites</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -55,7 +55,7 @@ const Search = ({navigation}) => {
               source={require('../../assets/images/message.png')}
               style={{width: 24, height: 22}}
             />
-            <Text style={{fontSize: 12}}>Messages</Text>
+            <Text style={{fontSize: 12, color: 'black'}}>Messages</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -83,7 +83,7 @@ const Search = ({navigation}) => {
               source={require('../../assets/images/book.png')}
               style={{width: 22, height: 22}}
             />
-            <Text style={{fontSize: 12}}>Bookings</Text>
+            <Text style={{fontSize: 12, color: 'black'}}>Bookings</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -99,7 +99,7 @@ const Search = ({navigation}) => {
               source={require('../../assets/images/profile.png')}
               style={{width: 15, height: 22}}
             />
-            <Text style={{fontSize: 12}}>Profile</Text>
+            <Text style={{fontSize: 12, color: 'black'}}>Profile</Text>
           </View>
         </TouchableOpacity>
       </View>

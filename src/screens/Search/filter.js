@@ -132,7 +132,7 @@ const Filter = ({navigation, setScrollStatus}) => {
           </Text>
         </Animated.View>
         <ScrollView
-          style={{flex: 1, margin: 16, bottom: 20}}
+          style={{flex: 1, margin: 16}}
           showsVerticalScrollIndicator={false}>
           <TouchableOpacity>
             <View style={[styles.searchWidget, {backgroundColor: '#f5f5f5'}]}>
@@ -144,6 +144,7 @@ const Filter = ({navigation, setScrollStatus}) => {
                 style={{fontWeight: 'bold', padding: 0, width: '80%'}}
                 value={location}
                 placeholder="Dubai, United Arab Emirates "
+                placeholderTextColor={'#6A7380'}
                 onChangeText={setLocation}
               />
             </View>
@@ -175,7 +176,7 @@ const Filter = ({navigation, setScrollStatus}) => {
               justifyContent: 'space-between',
             }}>
             <Text style={{color: 'black', fontSize: 20}}>
-              {list.length} Boats Available
+              {list.length > 0 ? list.length : 'No'} Boats Available
             </Text>
             <View style={{position: 'relative'}}>
               <TouchableOpacity onPress={handleSortIconClick}>
@@ -187,7 +188,6 @@ const Filter = ({navigation, setScrollStatus}) => {
               {showSortingSection ? (
                 <View
                   style={{
-                    backgroundColor: 'white',
                     width: 120,
                     position: 'absolute',
                     right: 10,

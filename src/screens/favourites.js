@@ -131,7 +131,7 @@ const Favourites = ({navigation}) => {
               source={require('../assets/images/message.png')}
               style={{width: 24, height: 22}}
             />
-            <Text style={{fontSize: 13}}>Messages</Text>
+            <Text style={{fontSize: 13, color: 'black'}}>Messages</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -143,7 +143,7 @@ const Favourites = ({navigation}) => {
               source={require('../assets/images/search.png')}
               style={{width: 20, height: 22}}
             />
-            <Text style={{fontSize: 13}}>Search</Text>
+            <Text style={{fontSize: 13, color: 'black'}}>Search</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -155,7 +155,7 @@ const Favourites = ({navigation}) => {
               source={require('../assets/images/book.png')}
               style={{width: 22, height: 22}}
             />
-            <Text style={{fontSize: 13}}>Bookings</Text>
+            <Text style={{fontSize: 13, color: 'black'}}>Bookings</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -167,7 +167,7 @@ const Favourites = ({navigation}) => {
               source={require('../assets/images/profile.png')}
               style={{width: 15, height: 22}}
             />
-            <Text style={{fontSize: 13}}>Profile</Text>
+            <Text style={{fontSize: 13, color: 'black'}}>Profile</Text>
           </View>
         </TouchableOpacity>
       </View>

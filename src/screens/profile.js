@@ -94,7 +94,7 @@ const Profile = ({navigation}) => {
                 style={{width: 32, height: 30}}
               />
               <Space width={16} />
-              <Text style={{fontSize: 18}}>Favourites</Text>
+              <Text style={{fontSize: 18, color: 'rgba(0,0,0,0.7)'}}>Favourites</Text>
             </View>
           </TouchableOpacity>
           <Space height={8} />
@@ -116,7 +116,7 @@ const Profile = ({navigation}) => {
                 style={{width: 32, height: 30}}
               />
               <Space width={16} />
-              <Text style={{fontSize: 18}}>Messages</Text>
+              <Text style={{fontSize: 18, color: 'rgba(0,0,0,0.7)'}}>Messages</Text>
             </View>
           </TouchableOpacity>
           <Space height={8} />
@@ -138,7 +138,7 @@ const Profile = ({navigation}) => {
                 style={{width: 30, height: 30, marginRight: 2}}
               />
               <Space width={16} />
-              <Text style={{fontSize: 18}}>Listings</Text>
+              <Text style={{fontSize: 18, color: 'rgba(0,0,0,0.7)'}}>Listings</Text>
             </View>
           </TouchableOpacity>
           <Space height={8} />
@@ -160,7 +160,7 @@ const Profile = ({navigation}) => {
                 style={{width: 32, height: 30}}
               />
               <Space width={16} />
-              <Text style={{fontSize: 18}}>Bookings</Text>
+              <Text style={{fontSize: 18, color: 'rgba(0,0,0,0.7)'}}>Bookings</Text>
             </View>
           </TouchableOpacity>
           <Space height={8} />
@@ -182,7 +182,7 @@ const Profile = ({navigation}) => {
                 style={{width: 32, height: 30}}
               />
               <Space width={16} />
-              <Text style={{fontSize: 18}}>App settings</Text>
+              <Text style={{fontSize: 18, color: 'rgba(0,0,0,0.7)'}}>App settings</Text>
             </View>
           </TouchableOpacity>
           <Space height={8} />
@@ -201,7 +201,7 @@ const Profile = ({navigation}) => {
                 style={{width: 32, height: 30}}
               />
               <Space width={16} />
-              <Text style={{fontSize: 18}}>Contact us</Text>
+              <Text style={{fontSize: 18, color: 'rgba(0,0,0,0.7)'}}>Contact us</Text>
             </View>
           </TouchableOpacity>
           <Space height={8} />
@@ -220,7 +220,7 @@ const Profile = ({navigation}) => {
                 style={{width: 32, height: 30}}
               />
               <Space width={16} />
-              <Text style={{fontSize: 18}}>Log out</Text>
+              <Text style={{fontSize: 18, color: 'rgba(0,0,0,0.7)'}}>Log out</Text>
             </View>
           </TouchableOpacity>
 
@@ -237,7 +237,7 @@ const Profile = ({navigation}) => {
               source={require('../assets/images/heart.png')}
               style={{width: 22, height: 22}}
             />
-            <Text style={{fontSize: 13}}>Favourites</Text>
+            <Text style={{fontSize: 13, color: 'black'}}>Favourites</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -249,7 +249,7 @@ const Profile = ({navigation}) => {
               source={require('../assets/images/message.png')}
               style={{width: 24, height: 22}}
             />
-            <Text style={{fontSize: 13}}>Messages</Text>
+            <Text style={{fontSize: 13, color: 'black'}}>Messages</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -261,7 +261,7 @@ const Profile = ({navigation}) => {
               source={require('../assets/images/search.png')}
               style={{width: 20, height: 22}}
             />
-            <Text style={{fontSize: 13}}>Search</Text>
+            <Text style={{fontSize: 13, color: 'black'}}>Search</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -273,7 +273,7 @@ const Profile = ({navigation}) => {
               source={require('../assets/images/book.png')}
               style={{width: 22, height: 22}}
             />
-            <Text style={{fontSize: 13}}>Bookings</Text>
+            <Text style={{fontSize: 13, color: 'black'}}>Bookings</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity

@@ -173,6 +173,7 @@ const RegisterScreen = ({navigation}) => {
           <Space height={30} />
           <IconTextInput
             placeholder="Full Name"
+            placeholderTextColor={'#6A7380'}
             image={require('../assets/images/user.png')}
             value={fullName}
             onChangeText={setFullName}
@@ -181,6 +182,7 @@ const RegisterScreen = ({navigation}) => {
           <Space height={20} />
           <IconTextInput
             placeholder="Email Address"
+            placeholderTextColor={'#6A7380'}
             image={require('../assets/images/email.png')}
             value={email}
             onChangeText={setEmail}
@@ -189,6 +191,7 @@ const RegisterScreen = ({navigation}) => {
           <Space height={20} />
           <IconTextInput
             placeholder="Password"
+            placeholderTextColor={'#6A7380'}
             image={require('../assets/images/lock.png')}
             value={password}
             onChangeText={setPassword}

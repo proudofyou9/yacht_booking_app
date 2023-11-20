@@ -24,7 +24,7 @@ const GuestFilter = props => {
       <Space height={32} />
       <Text style={{fontWeight: 'bold', color: 'rgba(0,0,0,0.8)'}}>
         Number of Passengers
-      </Text>
+      </Text> 
       <Space height={32} />
       <View
         style={{
@@ -54,7 +54,7 @@ const GuestFilter = props => {
             borderColor: '#246bbc',
             borderRadius: 4,
           }}>
-          <Text style={{textAlign: 'center'}}>{passenger}</Text>
+          <Text style={{textAlign: 'center', color: '#003580'}}>{passenger}</Text>
         </View>
         <TouchableOpacity
           style={{height: 22}}

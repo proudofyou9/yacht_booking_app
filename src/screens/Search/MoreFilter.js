@@ -510,6 +510,7 @@ const MoreFilter = props => {
               setManufactrer(text);
             }}
             placeholder="Beneteau"
+            placeholderTextColor={"#017268"}
           />
         </View>
       </View>

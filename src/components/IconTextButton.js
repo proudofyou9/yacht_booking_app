@@ -1,5 +1,11 @@
 import React from 'react';
-import {Text, StyleSheet, Pressable, View, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  Pressable,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import {Image} from 'react-native-elements';
 
 const IconTextButton = props => {
@@ -36,11 +42,16 @@ const IconTextButton = props => {
           alignContent: 'center',
           alignItems: 'center',
         }}>
-        {props.hasIcon?
-        <Image
-          source={require('../assets/images/light.png')}
-          style={{width: 12, height: 16, marginRight: 8}}
-        />:<></>}
+        {props.hasIcon ? (
+          <Image
+            source={
+              props.icon ? props.icon : require('../assets/images/light.png')
+            }
+            style={{width: 16, height: 16, marginRight: 8}}
+          />
+        ) : (
+          <></>
+        )}
         <Text style={styles.text}>{title}</Text>
       </View>
     </TouchableOpacity>

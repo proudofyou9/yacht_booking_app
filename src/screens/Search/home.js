@@ -12,17 +12,19 @@ import {
   TextInput,
 } from 'react-native';
 
-import Space from '../../components/Space';
 import {Image} from 'react-native-elements';
+// import DateTimePicker from 'react-native-ui-datepicker';
+import auth, {getAuth} from '@react-native-firebase/auth';
+import Space from '../../components/Space';
 import YachtCard from '../../components/YachtCard';
 import TextButton from '../../components/TextButton';
-import auth, {getAuth} from '@react-native-firebase/auth';
 import CONFIG from '../../utils/consts/config';
 
 const Home = ({navigation, setStatus}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [active, setActive] = useState(false);
   const [location, setLocation] = useState('');
+  const [date, setDate] = useState('');
   const [guest, setGuest] = useState('');
   const [list, setList] = useState([]);
   const openModal = () => {
@@ -336,9 +338,10 @@ const Home = ({navigation, setStatus}) => {
               />
               <Space width={16} />
               <TextInput
-                style={{fontWeight: 'bold', padding: 0, width: '80%'}}
+                style={{fontWeight: 'bold', padding: 0, width: '80%', color: "#323A3E"}}
                 value={location}
                 placeholder="Dubai, United Arab Emirates "
+                placeholderTextColor={"#323A3E"}
                 onChangeText={setLocation}
               />
             </View>
@@ -356,7 +359,13 @@ const Home = ({navigation, setStatus}) => {
                   style={{width: 20, height: 20}}
                 />
                 <Space width={16} />
-                <Text style={{fontSize: 16, fontWeight: 'bold'}}>Date</Text>
+                <TextInput
+                style={{fontWeight: 'bold', padding: 0, width: '80%', color: "#323A3E"}}
+                value={date}
+                placeholder="Date"
+                placeholderTextColor={"#323A3E"}
+                onChangeText={setDate}
+              />
               </TouchableOpacity>
             </SafeAreaView>
             <View
@@ -373,10 +382,11 @@ const Home = ({navigation, setStatus}) => {
               />
               <Space width={16} />
               <TextInput
-                style={{fontWeight: 'bold', padding: 0, width: '80%'}}
+                style={{fontWeight: 'bold', padding: 0, width: '80%', color: "#323A3E"}}
                 value={guest}
                 keyboardType="numeric"
                 placeholder="Number of Guests "
+                placeholderTextColor={"#323A3E"}
                 onChangeText={setGuest}
               />
             </View>

@@ -17,6 +17,7 @@ const IconTextInput = props => {
       <TextInput
         style={styles.input}
         placeholder={props.placeholder}
+        placeholderTextColor={props.placeholderTextColor}
         value={props.value}
         onChangeText={props.onChangeText}
         autoCorrect={false}

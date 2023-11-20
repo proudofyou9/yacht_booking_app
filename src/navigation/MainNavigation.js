@@ -16,6 +16,7 @@ import YachtScreen from "../pages/yacht";
 import BookScreen from "../pages/book";
 import DetailPriceScreen from "../pages/detailed_price";
 import PaymentScreen from '../pages/payment';
+import ContactScreen from '../pages/contact';
 
 import BookingScreen from '../screens/bookings';
 import ProfileScreen from '../screens/profile';
@@ -47,6 +48,7 @@ const MainNavigator = ({parentNavigator}) => {
             <Stack.Screen name="Book" component={BookScreen} />
             <Stack.Screen name="DetailedPrice" component={DetailPriceScreen} />
             <Stack.Screen name="Payment" component={PaymentScreen} />
+            <Stack.Screen name="Contact" component={ContactScreen} />
 
             <Stack.Screen name="Booking" component={BookingScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />

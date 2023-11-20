@@ -119,6 +119,7 @@ const LoginScreen = ({navigation}) => {
             value={email}
             onChangeText={setEmail}
             valid={emailValid}
+            placeholderTextColor={'#6A7380'}
           />
           <Space height={20} />
           <IconTextInput
@@ -128,6 +129,7 @@ const LoginScreen = ({navigation}) => {
             onChangeText={setPassword}
             valid={passwordValid}
             secureTextEntry={true}
+            placeholderTextColor={'#6A7380'}
           />
           <Space height={20} />
           <View style={styles.floatContainer}>
@@ -139,11 +141,11 @@ const LoginScreen = ({navigation}) => {
                   value={toggleCheckBox}
                   onValueChange={newValue => setToggleCheckBox(newValue)}
                 />
-                <Text> Remeber Password</Text>
+                <Text style={{color: '#6A7380'}}> Remeber Password</Text>
               </View>
             </View>
             <View style={styles.right}>
-              <Text>Forgot password?</Text>
+              <Text style={{color: '#6A7380'}}>Forgot password?</Text>
             </View>
           </View>
           <Space height={30} />

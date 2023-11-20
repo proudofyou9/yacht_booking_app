@@ -13,7 +13,7 @@ import Space from '../components/Space';
 import TextButton from '../components/TextButton';
 import IconTextButton from '../components/IconTextButton';
 
-const Contact = () => {
+const Contact = ({navigation}) => {
   const [inputValue, setInputValue] = useState(
     'Hello. Salih. I am interested in your yacht. \nIs it still available? If yes, can you send me a quote / offer? \nThank you. Illia',
   );
@@ -22,6 +22,16 @@ const Contact = () => {
   const handleInputChange = text => {
     setInputValue(text);
   };
+  const sendMessage = () => {
+    if(inputValue==""){
+      alert("Please input message");
+      return;
+    }
+    else{
+      alert("Successfully message transferred");
+      return;
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -31,15 +41,21 @@ const Contact = () => {
           showsVerticalScrollIndicator={false}>
           <View style={styles.header}>
             <View style={styles.leftComponent}>
-              <Image
-                source={require('../assets/images/arrow_left.png')}
-                style={{width: 20, height: 20}}
-              />
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.pop();
+                }}>
+                <Image
+                  source={require('../assets/images/arrow_left.png')}
+                  style={{width: 20, height: 20}}
+                />
+              </TouchableOpacity>
             </View>
             <Text style={styles.title}>Contact</Text>
             <View style={styles.rightComponent} />
           </View>
           <View style={{paddingHorizontal: 40}}>
+            <Space height={20} />
             <View>
               <View>
                 <View style={styles.float}>
@@ -109,6 +125,7 @@ const Contact = () => {
                     title="Edit"
                     style={{width: 90, height: 30}}
                     isOutline={true}
+                    enable={true}
                   />
                 </View>
               </View>
@@ -135,12 +152,18 @@ const Contact = () => {
                 </Text>
                 <Space height={4} />
                 <View style={{paddingLeft: 8}}>
-                  <Text>Make sure to include in your message:</Text>
+                  <Text style={{color: 'rgba(0,0,0,0.5)'}}>
+                    Make sure to include in your message:
+                  </Text>
                   <View style={{paddingLeft: 8}}>
                     <Space height={4} />
-                    <Text>- Number of passengers for your rental</Text>
+                    <Text style={{color: 'rgba(0,0,0,0.5)'}}>
+                      - Number of passengers for your rental
+                    </Text>
                     <Space height={4} />
-                    <Text>- With or without a skipper</Text>
+                    <Text style={{color: 'rgba(0,0,0,0.5)'}}>
+                      - With or without a skipper
+                    </Text>
                   </View>
                   <Space height={16} />
                   <View>
@@ -149,6 +172,7 @@ const Contact = () => {
                       value={inputValue}
                       onChangeText={handleInputChange}
                       placeholder="Enter text"
+                      placeholderTextColor={'rgba(0,0,0,0.5)'}
                       multiline={true}
                       numberOfLines={4}
                     />
@@ -162,11 +186,9 @@ const Contact = () => {
         </ScrollView>
       </View>
       <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.tab}>
-          <View style={{flexDirection: 'row', paddingVertical: 8}}>
-            <IconTextButton title="Send Message" hasIcon={false} />
-          </View>
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row', paddingVertical: 8}}>
+          <IconTextButton title="Send Message" hasIcon={false} onPress={sendMessage}/>
+        </View>
       </View>
     </View>
   );
@@ -211,7 +233,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 4,
   },
-  scrollContainer: {flexGrow: 1, overflow: 'scroll'},
+  scrollContainer: {flexGrow: 1, overflow: 'scroll', paddingBottom: 80},
   contain: {
     flex: 1,
     alignItems: 'center',
@@ -259,6 +281,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 8,
     textAlignVertical: 'top',
+    color: 'rgba(0,0,0,0.5)',
   },
 });
 
