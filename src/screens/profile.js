@@ -64,7 +64,7 @@ const Profile = ({navigation}) => {
                         fontSize: 20,
                         fontWeight: 'bold',
                       }}>
-                      {user.name}
+                      {user ? user.name : ""}
                     </Text>
                     <Text style={{color: '#5A5A5A'}}>Click view and edit</Text>
                   </View>

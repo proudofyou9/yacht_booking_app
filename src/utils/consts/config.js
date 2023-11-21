@@ -3,3 +3,5 @@ const CONFIG = {
 };
 
 export default CONFIG;
+
+export const WEB_CLIENT_ID = '519492099868-1i894undshk9fhaj9n3sfu8ifo8631gd.apps.googleusercontent.com'

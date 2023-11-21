@@ -16,53 +16,101 @@ import IconButton from '../components/IconButton';
 import Toast from 'react-native-toast-message';
 
 // import FingerprintScanner from 'react-native-fingerprint-scanner';
-import { auth, signInWithCredential } from '@react-native-firebase/auth';
-import { appleAuth, appleAuthAndroid } from '@invertase/react-native-apple-authentication';
-import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics';
-import { v4 as uuid } from 'uuid'
-
+import {getAuth, signInWithCredential, GoogleAuthProvider, AppleAuthProvider, OAuthProvider} from '@react-native-firebase/auth';
 import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-
-GoogleSignin.configure({
-  webClientId: '519492099868-1i894undshk9fhaj9n3sfu8ifo8631gd.apps.googleusercontent.com',
-  offlineAccess: true
-});
+  appleAuth,
+  appleAuthAndroid,
+  AppleAuthRequestScope,
+  AppleAuthRequestOperation,
+} from '@invertase/react-native-apple-authentication';
+import ReactNativeBiometrics, {BiometryTypes} from 'react-native-biometrics';
+import {v4 as uuid} from 'uuid';
+import {WEB_CLIENT_ID} from '../utils/consts/config';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import firestore from '@react-native-firebase/firestore';
+import CONFIG from '../utils/consts/config';
 
 const WelcomeScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [biometryType, setBiometryType] = useState(false);
+
   const handleOpenModal = () => {
     setModalVisible(true);
+  };
+
+  const googleSignInConfiguration = async () => {
+    GoogleSignin.configure({
+      webClientId:
+        WEB_CLIENT_ID,
+      offlineAccess: true,
+    })
   };
 
   const handleCloseModal = () => {
     setModalVisible(false);
   };
 
+  const addUser = async id => {
+    const response = await fetch(CONFIG.API_URL + 'users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: id,
+        type: 1,
+      }),
+    });
+    await response.json();
+  };
+
   const onGoogleButtonPress = async () => {
-    const { idToken } = await GoogleSignin.signIn()
-    console.log(idToken);
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const idToken = userInfo.idToken;
+      const googleCredential = await GoogleAuthProvider.credential(idToken);
+      const user = await signInWithCredential(getAuth(), googleCredential);
+      console.log(user.user);
+      if (user) {
+        firestore()
+          .collection('users')
+          .doc(user.user.uid)
+          .set({
+            name: user.user.displayName,
+            email: user.user.email,
+            uid: user.user.uid,
+          })
+          .then(response => {
+            alert('User successfully registered!');
+            addUser(user.user.uid);
+            navigation.replace('Search');
+          })
+          .catch(error => {
+            console.log(error);
+            alert('User register failed!');
+          });
+      }
+    } catch (error) {
+      console.log(error);
+      alert('Signin with Google account failed!')
+    }
   };
 
   const onAppleButtonPress = async () => {
-      
-  }
-
-  const revokeAccess = async () => {
     try {
-      const res = await GoogleSignin.revokeAccess();
-      if (res == null) {
-        return true;
-      } else {
-        return false;
-      }
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: 1,
+        requestedScopes: [
+          0,
+          1,
+        ],
+      })
+      const response = appleAuthRequestResponse
+      
     } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-        console.log(error);
-      }
+      console.log(error)
+      alert("AppleAuth is not supported on the device.")
     }
   };
 
@@ -75,6 +123,7 @@ const WelcomeScreen = ({navigation}) => {
   };
 
   useEffect(() => {
+    googleSignInConfiguration()
     // FingerprintScanner.isSensorAvailable()
     //   .then(biometryType => {
     //     setBiometryType(biometryType);
@@ -86,19 +135,15 @@ const WelcomeScreen = ({navigation}) => {
     if (biometryType !== null && biometryType !== undefined) {
       const rnBiometrics = new ReactNativeBiometrics();
 
-      const { available, biometryType } =
-        await rnBiometrics.isSensorAvailable();
-    
+      const {available, biometryType} = await rnBiometrics.isSensorAvailable();
+
       if (!available || biometryType !== BiometryTypes.FaceID) {
-        Alert.alert(
-          'Oops!',
-          'Face ID is not available on this device.',
-        );
+        Alert.alert('Oops!', 'Face ID is not available on this device.');
         return;
       }
-    
+
       const userId = await AsyncStorage.getItem('userId');
-    
+
       if (!userId) {
         Alert.alert(
           'Oops!',
@@ -106,19 +151,15 @@ const WelcomeScreen = ({navigation}) => {
         );
         return;
       }
-    
-      const timestamp = Math.round(
-        new Date().getTime() / 1000,
-      ).toString();
+
+      const timestamp = Math.round(new Date().getTime() / 1000).toString();
       const payload = `${userId}__${timestamp}`;
-    
-      const { success, signature } = await rnBiometrics.createSignature(
-        {
-          promptMessage: 'Sign in',
-          payload,
-        },
-      );
-    
+
+      const {success, signature} = await rnBiometrics.createSignature({
+        promptMessage: 'Sign in',
+        payload,
+      });
+
       if (!success) {
         Alert.alert(
           'Oops!',
@@ -126,17 +167,17 @@ const WelcomeScreen = ({navigation}) => {
         );
         return;
       }
-    
-      const { status, message } = await verifySignatureWithServer({
+
+      const {status, message} = await verifySignatureWithServer({
         signature,
         payload,
       });
-    
+
       if (status !== 'success') {
         Alert.alert('Oops!', message);
         return;
       }
-    
+
       Alert.alert('Success!', 'You are successfully authenticated!');
     } else {
       console.log('biometric authentication is not available');
@@ -171,9 +212,10 @@ const WelcomeScreen = ({navigation}) => {
               }}
             />
             <View style={styles.buttonContainer}>
-              <IconButton icon="apple" onPress={
-                async () => onAppleButtonPress()
-              } />
+              <IconButton
+                icon="apple"
+                onPress={async () => onAppleButtonPress()}
+              />
               <IconButton
                 icon="google"
                 onPress={async () => {
