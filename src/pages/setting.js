@@ -69,6 +69,9 @@ const Setting = ({navigation}) => {
                 borderColor: 'black',
                 borderRadius: 5,
               }}
+              rowStyle={{
+                height: 40
+              }}
             />
           </View>
           <Space height={16} />
